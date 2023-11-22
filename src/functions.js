@@ -13,4 +13,11 @@ const mapBorderDetect = ({obj1, obj2}) => {
   return rCollision;
 }
 
-export { collisionDetect, mapBorderDetect };
+const handleWindowResize = (game, renderer, camera) => {
+  game.setWidthHeight();
+  renderer.setSize(game.width, game.height);
+  camera.aspect = game.width / game.height;
+  camera.updateProjectionMatrix();
+}
+
+export { collisionDetect, mapBorderDetect, handleWindowResize };

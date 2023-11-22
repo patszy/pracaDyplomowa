@@ -11,7 +11,7 @@ class Hero extends THREE.Mesh {
     positionRadius = 0,
     position = {x: 0, y: 0, z:0},
     bounciness = 1,
-    canJump = false,
+    jumping = false,
   }) {
     super (
       new THREE.IcosahedronGeometry(radius, details),
@@ -26,7 +26,7 @@ class Hero extends THREE.Mesh {
     this.top = this.position.y + this.radius;
     this.bottom = this.position.y - this.radius;
     this.bounciness = bounciness;
-    this.canJump = canJump;
+    this.jumping = jumping;
   }
 
   getSides() {
@@ -50,6 +50,7 @@ class Hero extends THREE.Mesh {
       obj1: this,
       obj2: ground
     })) {
+      this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;
     } else {
