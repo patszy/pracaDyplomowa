@@ -5,7 +5,7 @@ class Map extends THREE.Mesh {
     startRadius,
     endRadius,
     details,
-    color = Colors.blue,
+    color = `#ffffff`,
     velocity = 0,
     gravity = 0,
     position = {x: 0, y: 0, z: 0},
