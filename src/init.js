@@ -64,7 +64,7 @@ const init = () => {
 //Hero instance
   const hero = new Hero({
     radius: .5,
-    details: 1,
+    details: 0,
     color: Colors.blue,
     velocity: {
       move: 0,
@@ -88,12 +88,12 @@ const init = () => {
 
 //Setting lights
   const ambientLight = new THREE.AmbientLight(0xffffff, .5);
-  const hemisphereLight = new THREE.HemisphereLight(0xfffafa, 0x000000, .9);
   const light = new THREE.DirectionalLight(0xffffff, 3);
-
+  
   light.position.set(15, 35, 35);
   light.castShadow = true;
-  scene.add(map, hero, ambientLight, hemisphereLight, light);
+
+  scene.add(map, hero, ambientLight, light);
 
 //Keys, Event listeners
   const Keys = {
@@ -141,11 +141,12 @@ const init = () => {
   });
   
   window.addEventListener("resize", () => handleWindowResize(game, renderer, camera), false);
-
+  var axis = new THREE.Vector3(-hero.radius, 0, -hero.radius).normalize(); 
+  var speed = 0.1;
 //Animation loop
   function animate() {
     requestAnimationFrame(animate);
-  
+
     hero.update(map);
     if(mapBorderDetect({obj1: hero, obj2: map}).l) {
       Keys.a.pressed = false;
@@ -156,9 +157,11 @@ const init = () => {
     if(Keys.a.pressed) hero.velocity.move = -game.speed;
     else if(Keys.d.pressed) hero.velocity.move = game.speed;
     else hero.velocity.move = 0;
+
+    hero.rotateOnAxis(axis.normalize(), speed);
     
     map.rotation.z += 0.01;
-
+    
     renderer.render( scene, camera );
   }
 
