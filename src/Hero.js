@@ -7,8 +7,7 @@ class Hero extends THREE.Mesh {
     details,
     color = Colors.blue,
     shininess = 0,
-    velocity = {move:0, y:0},
-    positionRadius = 0,
+    velocity = {x:0, y:0},
     position = {x: 0, y: 0, z:0},
     bounciness = 1,
     jumping = false,
@@ -21,24 +20,27 @@ class Hero extends THREE.Mesh {
     this.radius = radius;
     this.details = details;
     this.velocity = velocity;
-    this.positionRadius = positionRadius;
+    this.speed = 0;
     this.position.set(position.x, position.y, position.z);
     this.top = this.position.y + this.radius;
     this.bottom = this.position.y - this.radius;
+    this.right = this.position.x + this.radius;
+    this.left = this.position.x - this.radius;
     this.bounciness = bounciness;
     this.jumping = jumping;
   }
 
   getSides() {
+    this.top = this.position.y + this.radius;
     this.bottom = this.position.y - this.radius;
+    this.right = this.position.x + this.radius;
+    this.left = this.position.x - this.radius;
   }
 
   update(ground) {
     this.getSides();
 
-    this.positionRadius += this.velocity.move; 
-    this.position.x = Math.sin(Math.PI / 4) * this.positionRadius;
-    this.position.z = Math.cos(Math.PI / 4) * this.positionRadius;
+    this.position.x += this.velocity.x;
 
     this.applyGravity(ground)
   }

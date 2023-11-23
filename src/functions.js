@@ -6,8 +6,8 @@ const collisionDetect = ({obj1, obj2}) => {
 
 const mapBorderDetect = ({obj1, obj2}) => {
   const rCollision = {
-    l: obj1.positionRadius-obj1.radius <= obj2.startRadius,
-    r: obj1.positionRadius+obj1.radius >= obj2.endRadius
+    l: obj1.left <= obj2.left,
+    r: obj1.right >= obj2.right
   }
   
   return rCollision;

@@ -18,7 +18,7 @@ const init = () => {
 
   const game = new Game ({
     gravity: -0.005,
-    speed: .05,
+    speed: 10000, //higher value slows game
     jumpPower: 0.12,
     heroInitialPosition: {
       x: 0,
@@ -37,10 +37,8 @@ const init = () => {
   camera = new THREE.PerspectiveCamera(75, game.width / game.height, .1, 1000);
   renderer = new THREE.WebGLRenderer({antialias: true, alpha:true});
 
-  camera.position.set(0, 5, 15);
-  camera.lookAt(0,0,0);
-
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setSize(game.width, game.height);
   document.body.appendChild(renderer.domElement);
 
@@ -48,29 +46,30 @@ const init = () => {
 
 //Map instance
   const map = new Map({
-    startRadius: 5,
-    endRadius: 10,
-    details: 64,
+    startRadius: 10,
+    endRadius: 20,
+    details: 128,
     color: Colors.green,
     gravity: game.gravity
   });
 
+  map.speed = (2*Math.PI*map.middleRadius)/game.speed;
   game.heroInitialPosition = {
-    x: Math.sin(Math.PI/4) * map.middle,
+    x: map.middleRadius,
     y: 2,
-    z: Math.cos(Math.PI/4) * map.middle,
+    z: 0,
   }
 
 //Hero instance
   const hero = new Hero({
-    radius: .5,
+    radius: .7,
     details: 0,
     color: Colors.blue,
+    shininess: 100,
     velocity: {
-      move: 0,
+      x: 0,
       y: -.01
     },
-    positionRadius: map.middle,
     position: {
       x: game.heroInitialPosition.x,
       y: game.heroInitialPosition.y,
@@ -80,20 +79,28 @@ const init = () => {
     jumping: false
   });
 
+  hero.speed = map.speed*((2*Math.PI*map.middleRadius)/(2*Math.PI*hero.radius));
+  
   map.setHorizontally();
   map.receiveShadow = true;
-  hero.receiveShadow = true;
   hero.castShadow = true;
  
-
 //Setting lights
   const ambientLight = new THREE.AmbientLight(0xffffff, .5);
   const light = new THREE.DirectionalLight(0xffffff, 3);
+  const backLight = new THREE.PointLight(0xffffff, 1);
   
-  light.position.set(15, 35, 35);
+  light.position.set(-map.middleRadius, map.middleRadius, -map.middleRadius);
   light.castShadow = true;
-
-  scene.add(map, hero, ambientLight, light);
+  light.shadow.mapSize.width = 512;
+  light.shadow.mapSize.height = 512;
+  light.shadow.camera.near = 0.5;
+  light.shadow.camera.far = 500;
+  light.shadow.camera.left = - 20;
+  light.shadow.camera.right = 20;
+  light.shadow.camera.top = 20;
+  light.shadow.camera.bottom = -20;
+  scene.add(map, hero, ambientLight, light, backLight);
 
 //Keys, Event listeners
   const Keys = {
@@ -141,27 +148,31 @@ const init = () => {
   });
   
   window.addEventListener("resize", () => handleWindowResize(game, renderer, camera), false);
-  var axis = new THREE.Vector3(-hero.radius, 0, -hero.radius).normalize(); 
-  var speed = 0.1;
+
+  camera.position.set(hero.position.x, hero.position.y+2, hero.position.z+5);
+
 //Animation loop
   function animate() {
     requestAnimationFrame(animate);
-
+    
     hero.update(map);
+
+    camera.lookAt(hero.position.x, hero.position.y, hero.position.z);
+    backLight.position.set(hero.position.x, 2, 2);
+
     if(mapBorderDetect({obj1: hero, obj2: map}).l) {
       Keys.a.pressed = false;
     } else if(mapBorderDetect({obj1: hero, obj2: map}).r) {
       Keys.d.pressed = false;
     }
 
-    if(Keys.a.pressed) hero.velocity.move = -game.speed;
-    else if(Keys.d.pressed) hero.velocity.move = game.speed;
-    else hero.velocity.move = 0;
+    if(Keys.a.pressed) hero.velocity.x = -hero.speed/3;
+    else if(Keys.d.pressed) hero.velocity.x = hero.speed/3;
+    else hero.velocity.x = 0;
+    
+    hero.rotation.x -= hero.speed;
+    map.rotation.z += map.speed;
 
-    hero.rotateOnAxis(axis.normalize(), speed);
-    
-    map.rotation.z += 0.01;
-    
     renderer.render( scene, camera );
   }
 
