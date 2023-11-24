@@ -5,9 +5,9 @@ class Hero extends THREE.Mesh {
   constructor({
     radius,
     details,
-    color = Colors.blue,
+    color = `#0000ff`,
     shininess = 0,
-    velocity = {x:0, y:0},
+    velocity = {x:0, y:0, z:0},
     position = {x: 0, y: 0, z:0},
     bounciness = 1,
     jumping = false,
@@ -18,7 +18,6 @@ class Hero extends THREE.Mesh {
     )
 
     this.radius = radius;
-    this.details = details;
     this.velocity = velocity;
     this.speed = 0;
     this.position.set(position.x, position.y, position.z);
@@ -26,6 +25,8 @@ class Hero extends THREE.Mesh {
     this.bottom = this.position.y - this.radius;
     this.right = this.position.x + this.radius;
     this.left = this.position.x - this.radius;
+    this.front = this.position.z + this.radius;
+    this.back = this.position.z - this.radius;
     this.bounciness = bounciness;
     this.jumping = jumping;
   }
@@ -35,11 +36,13 @@ class Hero extends THREE.Mesh {
     this.bottom = this.position.y - this.radius;
     this.right = this.position.x + this.radius;
     this.left = this.position.x - this.radius;
+    this.front = this.position.z + this.radius;
+    this.back = this.position.z - this.radius;
   }
 
-  update(ground) {
+  updatePosition(ground) {
     this.getSides();
-
+    
     this.position.x += this.velocity.x;
 
     this.applyGravity(ground)
@@ -51,7 +54,7 @@ class Hero extends THREE.Mesh {
     if(collisionDetect({
       obj1: this,
       obj2: ground
-    })) {
+    }).yCollision) {
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;

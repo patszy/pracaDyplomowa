@@ -5,7 +5,7 @@ class Map extends THREE.Mesh {
     startRadius,
     endRadius,
     details,
-    color = `#ffffff`,
+    color = `#00ff00`,
     gravity = 0,
     position = {x: 0, y: 0, z: 0},
   }) {
@@ -26,10 +26,16 @@ class Map extends THREE.Mesh {
     this.bottom = this.position.y;
     this.right = this.endRadius;
     this.left = this.startRadius;
+    this.front = 1;
+    this.back = 1;
   }
   
   setHorizontally() {
     this.rotateX(Math.PI / 2);
+  }
+
+  setSpeed(speed) {
+    this.speed = (2*Math.PI*this.middleRadius)/speed;
   }
 }
 

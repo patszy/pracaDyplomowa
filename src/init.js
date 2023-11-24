@@ -3,7 +3,8 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Game from './Game';
 import Map from './Map';
 import Hero from './Hero';
-import { mapBorderDetect, handleWindowResize } from './functions';
+import Rock from './Rock';
+import { mapBorderDetect, handleWindowResize, drawRandom } from './functions';
 
 const init = () => {
   const Colors = {
@@ -13,7 +14,8 @@ const init = () => {
     pink: `#c1121f`,
     brownDark: `#432818`,
     blue: `#219ebc`,
-    green: `#2d6a4f`
+    green: `#2d6a4f`,
+    gray: `#6c757d`
   };
 
   const game = new Game ({
@@ -37,6 +39,8 @@ const init = () => {
   camera = new THREE.PerspectiveCamera(75, game.width / game.height, .1, 1000);
   renderer = new THREE.WebGLRenderer({antialias: true, alpha:true});
 
+  camera.position.set(0,30,0);
+
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.setSize(game.width, game.height);
@@ -48,12 +52,13 @@ const init = () => {
   const map = new Map({
     startRadius: 10,
     endRadius: 20,
-    details: 128,
+    details: 10,
     color: Colors.green,
     gravity: game.gravity
   });
 
-  map.speed = (2*Math.PI*map.middleRadius)/game.speed;
+  map.setSpeed(game.speed);
+
   game.heroInitialPosition = {
     x: map.middleRadius,
     y: 2,
@@ -63,20 +68,14 @@ const init = () => {
 //Hero instance
   const hero = new Hero({
     radius: .7,
-    details: 0,
     color: Colors.blue,
     shininess: 100,
-    velocity: {
-      x: 0,
-      y: -.01
-    },
     position: {
       x: game.heroInitialPosition.x,
       y: game.heroInitialPosition.y,
       z: game.heroInitialPosition.z,
     },
-    bounciness: .7,
-    jumping: false
+    bounciness: .7
   });
 
   hero.speed = map.speed*((2*Math.PI*map.middleRadius)/(2*Math.PI*hero.radius));
@@ -84,7 +83,18 @@ const init = () => {
   map.setHorizontally();
   map.receiveShadow = true;
   hero.castShadow = true;
+
+  camera.position.set(hero.position.x, hero.position.y+2, hero.position.z+5);
  
+//Enemy instance
+  const rock = new Rock({
+    radius: .5,
+    color: Colors.gray
+  });
+
+  rock.positionRadius = drawRandom(map.startRadius + rock.radius*2, map.endRadius - rock.radius*2);
+  // rock.updatePosition();
+
 //Setting lights
   const ambientLight = new THREE.AmbientLight(0xffffff, .5);
   const light = new THREE.DirectionalLight(0xffffff, 3);
@@ -100,7 +110,7 @@ const init = () => {
   light.shadow.camera.right = 20;
   light.shadow.camera.top = 20;
   light.shadow.camera.bottom = -20;
-  scene.add(map, hero, ambientLight, light, backLight);
+  scene.add(map, hero, rock, ambientLight, light, backLight);
 
 //Keys, Event listeners
   const Keys = {
@@ -149,16 +159,16 @@ const init = () => {
   
   window.addEventListener("resize", () => handleWindowResize(game, renderer, camera), false);
 
-  camera.position.set(hero.position.x, hero.position.y+2, hero.position.z+5);
-
 //Animation loop
   function animate() {
     requestAnimationFrame(animate);
-    
-    hero.update(map);
 
-    camera.lookAt(hero.position.x, hero.position.y, hero.position.z);
-    backLight.position.set(hero.position.x, 2, 2);
+    rock.updatePosition(map, hero);
+   
+    hero.updatePosition(map);
+
+    camera.lookAt(hero.position.x, hero.position.y, hero.position.z)
+    backLight.position.set(hero.position.x, hero.position.y, hero.position.z+1.5);
 
     if(mapBorderDetect({obj1: hero, obj2: map}).l) {
       Keys.a.pressed = false;
@@ -171,7 +181,7 @@ const init = () => {
     else hero.velocity.x = 0;
     
     hero.rotation.x -= hero.speed;
-    map.rotation.z += map.speed;
+    // map.rotation.z += map.speed;
 
     renderer.render( scene, camera );
   }
