@@ -4,7 +4,7 @@ import Game from './Game';
 import Map from './Map';
 import Hero from './Hero';
 import Rock from './Rock';
-import { mapBorderDetect, handleWindowResize, drawRandom } from './functions';
+import { mapBorderDetect, collisionDetect, handleWindowResize, drawRandom } from './functions';
 
 const init = () => {
   const Colors = {
@@ -39,7 +39,7 @@ const init = () => {
   camera = new THREE.PerspectiveCamera(75, game.width / game.height, .1, 1000);
   renderer = new THREE.WebGLRenderer({antialias: true, alpha:true});
 
-  camera.position.set(0,30,0);
+  camera.position.set(0,20,0);
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -52,7 +52,7 @@ const init = () => {
   const map = new Map({
     startRadius: 10,
     endRadius: 20,
-    details: 10,
+    details: 128,
     color: Colors.green,
     gravity: game.gravity
   });
@@ -87,13 +87,14 @@ const init = () => {
   camera.position.set(hero.position.x, hero.position.y+2, hero.position.z+5);
  
 //Enemy instance
-  const rock = new Rock({
-    radius: .5,
-    color: Colors.gray
-  });
+  // const rock = new Rock({
+  //   radius: drawRandom(.5, 1.5),
+  //   color: Colors.gray
+  // });
 
-  rock.positionRadius = drawRandom(map.startRadius + rock.radius*2, map.endRadius - rock.radius*2);
-  // rock.updatePosition();
+  // rock.positionRadius = drawRandom(map.startRadius + rock.radius*rock.scaleVector.x*2, map.endRadius - rock.radius*rock.scaleVector.x*2);
+  // rock.receiveShadow = true;
+  // rock.castShadow = true;
 
 //Setting lights
   const ambientLight = new THREE.AmbientLight(0xffffff, .5);
@@ -104,13 +105,13 @@ const init = () => {
   light.castShadow = true;
   light.shadow.mapSize.width = 512;
   light.shadow.mapSize.height = 512;
-  light.shadow.camera.near = 0.5;
+  light.shadow.camera.near = .5;
   light.shadow.camera.far = 500;
   light.shadow.camera.left = - 20;
   light.shadow.camera.right = 20;
   light.shadow.camera.top = 20;
   light.shadow.camera.bottom = -20;
-  scene.add(map, hero, rock, ambientLight, light, backLight);
+  scene.add(map, hero, ambientLight, light, backLight);
 
 //Keys, Event listeners
   const Keys = {
@@ -159,11 +160,74 @@ const init = () => {
   
   window.addEventListener("resize", () => handleWindowResize(game, renderer, camera), false);
 
+  const enemies = [];
+
+  const rock = new Rock({
+    radius: drawRandom(.5, 1.5),
+    color: Colors.gray
+  });
+
+  rock.positionRadius = drawRandom(map.startRadius + rock.radius*rock.scaleVector.x*2, map.endRadius - rock.radius*rock.scaleVector.x*2);
+  rock.receiveShadow = true;
+  rock.castShadow = true;
+  enemies.push(rock);
+  scene.add(rock);
+
+  // for(let i=0; i< 10; i++){
+  //   const rock = new Rock({
+  //     radius: drawRandom(.5, 1.5),
+  //     color: Colors.gray
+  //   });
+  
+  //   rock.positionRadius = drawRandom(map.startRadius + rock.radius*rock.scaleVector.x*2, map.endRadius - rock.radius*rock.scaleVector.x*2);
+  //   rock.receiveShadow = true;
+  //   rock.castShadow = true;
+  //   enemies.push(rock);
+  //   scene.add(rock);
+  // }
+
+  let spawnRate = 200;
+  let frames = 0;
 //Animation loop
   function animate() {
-    requestAnimationFrame(animate);
+    const animationId = requestAnimationFrame(animate);
 
-    rock.updatePosition(map, hero);
+    if (frames % spawnRate === 0) {
+      spawnRate -= 10
+
+      const rock = new Rock({
+        radius: drawRandom(.5, 1.5),
+        color: Colors.gray
+      });
+    
+      rock.positionRadius = drawRandom(map.startRadius + rock.radius*rock.scaleVector.x*2, map.endRadius - rock.radius*rock.scaleVector.x*2);
+      rock.receiveShadow = true;
+      rock.castShadow = true;
+      enemies.push(rock);
+      scene.add(rock);
+    } 
+
+    enemies.forEach((enemy) => {
+      enemy.updatePosition(map, hero);
+      if (collisionDetect({
+          obj1: hero,
+          obj2: enemy
+        }).xCollision &&
+        collisionDetect({
+          obj1: hero,
+          obj2: enemy
+        }).yCollision &&
+        collisionDetect({
+          obj1: hero,
+          obj2: enemy
+        }).zCollision
+        ) {
+          cancelAnimationFrame(animationId);
+        }              
+    });
+
+    frames++;
+    // rock.updatePosition(map, hero);
    
     hero.updatePosition(map);
 
@@ -176,8 +240,8 @@ const init = () => {
       Keys.d.pressed = false;
     }
 
-    if(Keys.a.pressed) hero.velocity.x = -hero.speed/3;
-    else if(Keys.d.pressed) hero.velocity.x = hero.speed/3;
+    if(Keys.a.pressed) hero.velocity.x = -hero.speed/2;
+    else if(Keys.d.pressed) hero.velocity.x = hero.speed/2;
     else hero.velocity.x = 0;
     
     hero.rotation.x -= hero.speed;
