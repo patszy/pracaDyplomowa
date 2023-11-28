@@ -1,0 +1,201 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// import Game from './Game';
+import Map from './Map';
+import Hero from './Hero';
+import Obstacle from './Obstacle';
+import Gem from './Gem';
+import { handleWindowResize, drawRandom, checkBoxCollision, checkSphereCollision, checkMapBorderCollision } from './functions';
+
+
+//INIT COLORS
+
+const Colors = {
+  white: `#f8f9fa`,
+  black: `#212529`,
+  red: `#a4161a`,
+  green: `#40916c`,
+  blue: `#219ebc`,
+
+  brown: `#99582a`,
+  pink: `#ff8fa3`,
+  brownDark: `#432818`,
+  gray: `#6c757d`,
+  
+};
+
+//THREE.JS NECESSARY VARIABLES
+
+let scene,
+    camera, viewAngle, aspectRatio, minGenerationField, maxGenerationField,
+    renderer,
+    controls,
+    ambientLight, hemisphereLight, pointLight;
+
+//INIT SCENE, CAMERA, RENDERER, WINDOW RESIZE
+
+const createScene = () => {
+  const WIDTH = window.innerWidth;
+  const HEIGHT = window.innerHeight;
+  aspectRatio = WIDTH / HEIGHT;
+  viewAngle = 75;
+  minGenerationField = 1;
+  maxGenerationField = 1000;
+
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera(viewAngle, aspectRatio, minGenerationField, maxGenerationField);
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  controls = new OrbitControls(camera, renderer.domElement);
+
+  scene.fog = new THREE.Fog(Colors.gray, 100, 500);
+  camera.position.set(0, -100, 300);
+  camera.lookAt(0, -100, 0);
+
+  renderer.setSize(WIDTH, HEIGHT);
+  renderer.shadowMap.enabled = true;
+  document.body.appendChild(renderer.domElement);
+
+  window.addEventListener(`resize`, () => handleWindowResize(camera, renderer), false);
+}
+
+//LIGHTS
+
+const createLights = () => {
+  
+  ambientLight = new THREE.AmbientLight(Colors.pink, .5);
+  hemisphereLight = new THREE.HemisphereLight(Colors.gray, Colors.black, 1);
+  pointLight = new THREE.DirectionalLight(Colors.white, 1);
+
+  pointLight.position.set(150, 350, 350);
+  pointLight.castShadow = true;
+  pointLight.shadow.camera.left = -400;
+  pointLight.shadow.camera.right = 400;
+  pointLight.shadow.camera.top = 400;
+  pointLight.shadow.camera.bottom = -400;
+  pointLight.shadow.camera.near = minGenerationField;
+  pointLight.shadow.camera.far = maxGenerationField;
+  pointLight.shadow.mapSize.width = 4096;
+  pointLight.shadow.mapSize.height = 4096;
+
+  scene.add(ambientLight, hemisphereLight, pointLight);
+}
+
+//INIT HERO, MAP, OBSTACLE
+
+let map, hero, obstacle, gem;
+
+const createMap = () =>{
+  map = new Map({
+    radius: 100,
+    height: 10,
+    radailSegments: 40,
+    color: Colors.green,
+    speed: 0.01
+  });
+  map.setHorizontally();
+  map.mesh.position.y -= map.radius;
+  map.getSides();
+  scene.add(map.mesh);
+}
+
+const createHero = () =>{
+  hero = new Hero({
+    radius: 10,
+    details: 2 ,
+    color: Colors.red,
+    jumpStrength: map.gravity*10,
+    bounciness: .7
+  });
+  hero.velocity.x = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
+  hero.mesh.position.y += hero.radius*2;
+  scene.add(hero.mesh);
+}
+
+const createObstacle = () =>{
+  obstacle = new Obstacle({
+    radius: drawRandom(hero.radius, hero.radius*2),
+    color: Colors.gray
+  });
+  scene.add(obstacle.mesh);
+}
+
+const createGem = () =>{
+  gem = new Gem({
+    radius: 5,
+    color: Colors.blue
+  });
+  gem.velocity.y = drawRandom(30, 70);
+  scene.add(gem.mesh);
+}
+
+//EVENT LISTENERS
+
+const Keys = {
+  a: {
+    pressed: false
+  },
+  d: {
+    pressed: false
+  },
+  space: {
+    pressed: false
+  }
+};
+
+window.addEventListener('keydown', (event) => {
+  switch(event.code) {
+    case 'KeyA' : 
+      Keys.a.pressed = true;
+      break;
+    case 'KeyD' : 
+      Keys.d.pressed = true;
+      break;
+    case 'Space' : 
+      if(!hero.jumping) {
+        Keys.space.pressed = true;
+        hero.velocity.y = hero.jumpStrength;
+        hero.jumping = true;
+      };
+      break;
+  }
+});
+
+window.addEventListener('keyup', (event) => {
+  switch(event.code) {
+    case 'KeyA' : 
+      Keys.a.pressed = false;
+      break;
+    case 'KeyD' : 
+      Keys.d.pressed = false;
+      break;
+    case 'Space' : 
+      Keys.space.pressed = false;
+      break;
+  }
+});
+
+//ANIMATION LOOP
+
+const animate = () => {
+  map.mesh.rotation.y += map.speed;
+  
+  hero.updatePosition(map);
+  obstacle.updatePosition(map, hero);
+  gem.updatePosition(map, hero); 
+
+  renderer.render( scene, camera );
+  requestAnimationFrame(animate);
+}
+
+const init = () => {
+  createScene();
+  createLights();
+  createMap();
+  createHero();
+  createObstacle();
+  createGem();
+
+  animate();
+}
+
+export default init;
