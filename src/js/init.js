@@ -24,6 +24,12 @@ const Colors = {
   
 };
 
+//INIT GAME START VARIABLES
+
+const Game = {
+  initialMapSpeed: 0.01,
+}
+
 //THREE.JS NECESSARY VARIABLES
 
 let scene,
@@ -90,7 +96,8 @@ const createMap = () =>{
     height: 300,
     radailSegments: 40,
     color: Colors.green,
-    speed: 0.01
+    speed: Game.initialMapSpeed,
+    gravity: 0.5
   });
   map.setHorizontally();
   map.mesh.position.y -= map.radius;
@@ -104,17 +111,17 @@ const createHero = () =>{
     details: 2 ,
     color: Colors.red,
     speed: 0.02,
-    jumpStrength: map.gravity*10,
+    jumpStrength: 7,
     bounciness: .7
   });
-  hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
+  hero.setRotationSpeed(map);
   hero.mesh.position.y += hero.radius*2;
   scene.add(hero.mesh);
 }
 
 const createObstacle = () =>{
   obstacle = new Obstacle({
-    radius: drawRandom(hero.radius, hero.radius*2),
+    radius: drawRandom(hero.radius, hero.jumpStrength*4),
     color: Colors.gray,
     rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
     startAngle: drawRandom(180, 360)
@@ -155,9 +162,9 @@ window.addEventListener('keydown', (event) => {
       Keys.a.pressed = true;
       break;
     case 'KeyD' : 
-      Keys.d.pressed = true;
+      // Keys.d.pressed = true;
       map.speed = hero.speed;
-      hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
+      hero.setRotationSpeed(map);
       break;
     case 'Space' : 
       if(!hero.jumping) {
@@ -175,9 +182,9 @@ window.addEventListener('keyup', (event) => {
       Keys.a.pressed = false;
       break;
     case 'KeyD' : 
-      Keys.d.pressed = false;
-      map.speed = 0.01;
-      hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
+      // Keys.d.pressed = false;
+      map.speed = Game.initialMapSpeed;
+      hero.setRotationSpeed(map);
       break;
     case 'Space' : 
       // Keys.space.pressed = false;
@@ -188,8 +195,7 @@ window.addEventListener('keyup', (event) => {
 //ANIMATION LOOP
 
 const animate = () => {
-  map.mesh.rotation.y += map.speed;
-  
+  map.updatePosition();
   hero.updatePosition(map);
   obstacle.updatePosition(map, hero);
   gem.updatePosition(map, hero); 

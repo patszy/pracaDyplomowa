@@ -44,8 +44,8 @@ class Map {
     this.mesh.rotateX(Math.PI / 2);    
   }
 
-  setSpeed(speed) {
-    this.speed = speed;
+  updatePosition() {
+    this.mesh.rotation.y += this.speed;
   }
 }
 

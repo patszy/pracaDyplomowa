@@ -39,6 +39,10 @@ class Hero {
     this.back = this.mesh.position.z - this.radius;
   }
 
+  setRotationSpeed(map) {
+    this.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*this.radius));
+  }
+
   getSides() {
     this.right = this.mesh.position.x + this.radius;
     this.left = this.mesh.position.x - this.radius;
@@ -48,19 +52,19 @@ class Hero {
     this.back = this.mesh.position.z - this.radius;
   }
 
-  updatePosition(ground) {
+  updatePosition(map) {
     this.getSides();
 
     // this.mesh.position.x += this.velocity.x;
     this.mesh.rotation.z -= this.rotationSpeed;
 
-    this.applyGravity(ground)
+    this.applyGravity(map)
   }
 
-  applyGravity(ground) {
-    this.velocity.y -= ground.gravity;
+  applyGravity(map) {
+    this.velocity.y -= map.gravity;
     
-    if(checkBoxCollision({ obj1: this, obj2: ground }).y) {
+    if(checkBoxCollision({ obj1: this, obj2: map }).y) {
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;
