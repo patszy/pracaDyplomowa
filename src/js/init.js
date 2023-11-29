@@ -48,7 +48,7 @@ const createScene = () => {
   controls = new OrbitControls(camera, renderer.domElement);
 
   scene.fog = new THREE.Fog(Colors.gray, 100, 500);
-  camera.position.set(0, -100, 300);
+  camera.position.set(0, -100, 200);
   camera.lookAt(0, -100, 0);
 
   renderer.setSize(WIDTH, HEIGHT);
@@ -106,7 +106,7 @@ const createHero = () =>{
     jumpStrength: map.gravity*10,
     bounciness: .7
   });
-  hero.velocity.x = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
+  hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
   hero.mesh.position.y += hero.radius*2;
   scene.add(hero.mesh);
 }
@@ -114,17 +114,24 @@ const createHero = () =>{
 const createObstacle = () =>{
   obstacle = new Obstacle({
     radius: drawRandom(hero.radius, hero.radius*2),
-    color: Colors.gray
+    color: Colors.gray,
+    rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
+    startAngle: drawRandom(180, 360)
   });
+  obstacle.aboveMapHeight = drawRandom(0-obstacle.radius/2, obstacle.radius/2),
+
   scene.add(obstacle.mesh);
 }
 
 const createGem = () =>{
   gem = new Gem({
     radius: 5,
-    color: Colors.blue
+    color: Colors.blue,
+    rotationSpeed: 0.03,
+    rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
+    aboveMapHeight: drawRandom(30, 70),
+    startAngle: drawRandom(180, 360)
   });
-  gem.velocity.y = drawRandom(30, 70);
   scene.add(gem.mesh);
 }
 

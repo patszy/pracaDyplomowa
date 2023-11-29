@@ -36,4 +36,8 @@ const drawRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-export { checkBoxCollision, checkSphereCollision, checkMapBorderCollision, handleWindowResize, drawRandom };
+function degreeToRadians(degree) {
+  return (Math.PI / 180) * degree;
+}
+
+export { checkBoxCollision, checkSphereCollision, checkMapBorderCollision, handleWindowResize, drawRandom, degreeToRadians };

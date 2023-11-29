@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { checkSphereCollision } from './functions';
+import { checkSphereCollision, degreeToRadians, drawRandom } from './functions';
 
 class Gem {
   constructor({
@@ -7,6 +7,10 @@ class Gem {
     details = 0,
     color = `#0000ff`,
     shininess = 1,
+    rotationSpeed = 0,
+    rotationCenter = new THREE.Vector3(0, 0, 0),
+    startAngle = 0,
+    aboveMapHeight = 0,
     velocity = {x:0, y:0, z:0},
     position = {x: 0, y: 0, z:0}
   }) {
@@ -17,10 +21,11 @@ class Gem {
     this.mesh.receiveShadow = true;
 
     this.radius = radius;
-    this.details = details,
-    this.shininess = shininess,
+    this.rotationSpeed = rotationSpeed,
+    this.rotationCenter = rotationCenter,
+    this.aboveMapHeight = aboveMapHeight,
+    this.startAngle = startAngle,
     this.velocity = velocity;
-    this.speed = 0;
     
     this.mesh.position.set(position.x, position.y, position.z);
 
@@ -44,15 +49,21 @@ class Gem {
   updatePosition(map, hero) {
     this.getSides();
 
-    this.mesh.position.x = Math.cos(map.mesh.rotation.y) * (map.radius+this.velocity.y);
-    this.mesh.position.y = Math.sin(map.mesh.rotation.y) * (map.radius+this.velocity.y) - map.radius;
+    this.mesh.rotation.y -= this.rotationSpeed;
+    this.velocity.x = this.velocity.y += map.speed;
 
-    let collision = checkSphereCollision({ obj1: this, obj2: hero });
-    if(collision) {
-      console.log(true);
-    } else {
-      // console.log(false);
+    this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
+    this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
+    
+    if(checkSphereCollision({ obj1: this, obj2: hero })) {
+      this.respawn();
+      this.updatePosition(map, hero);
     }
+  }
+
+  respawn() {
+    this.startAngle = drawRandom(180, 360);
+    this.velocity.x = this.velocity.y = 0;
   }
 }
 

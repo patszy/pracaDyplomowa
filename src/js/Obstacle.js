@@ -1,13 +1,16 @@
 import * as THREE from 'three';
-import { checkSphereCollision } from './functions';
+import { checkSphereCollision, degreeToRadians } from './functions';
 
 class Obstacle {
   constructor({
     radius = 1,
     details = 0,
     color = `#808080`,
+    rotationCenter = new THREE.Vector3(0, 0, 0),
+    startAngle = 0,
+    aboveMapHeight = 0,
     velocity = {x:0, y:0, z:0},
-    position = {x: 0, y: 0, z:0}
+    position = {x: 0, y: 0, z:0},
   }) {
     this.geometry = new THREE.DodecahedronGeometry(radius, details);
     this.material = new THREE.MeshLambertMaterial({color, flatShading: true});
@@ -16,9 +19,10 @@ class Obstacle {
     this.mesh.receiveShadow = true;
 
     this.radius = radius;
-    this.details = details,
+    this.rotationCenter = rotationCenter,
+    this.aboveMapHeight = aboveMapHeight,
+    this.startAngle = startAngle,
     this.velocity = velocity;
-    this.speed = 0;
     
     this.mesh.position.set(position.x, position.y, position.z);
 
@@ -42,14 +46,13 @@ class Obstacle {
   updatePosition(map, hero) {
     this.getSides();
 
-    this.mesh.position.x = map.radius * Math.cos(map.mesh.rotation.y);
-    this.mesh.position.y = map.radius * Math.sin(map.mesh.rotation.y)-map.radius;
+    this.velocity.x = this.velocity.y += map.speed;
 
-    let collision = checkSphereCollision({ obj1: this, obj2: hero });
-    if(collision) {
+    this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
+    this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
+
+    if(checkSphereCollision({ obj1: this, obj2: hero })) {
       hero.velocity.y = hero.jumpStrength;
-    } else {
-      // console.log(false);
     }
   }
 }
