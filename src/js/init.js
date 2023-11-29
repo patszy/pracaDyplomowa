@@ -48,8 +48,8 @@ const createScene = () => {
   controls = new OrbitControls(camera, renderer.domElement);
 
   scene.fog = new THREE.Fog(Colors.gray, 100, 500);
-  camera.position.set(0, -100, 200);
-  camera.lookAt(0, -100, 0);
+  camera.position.set(0, 50, 150);
+  camera.lookAt(0, 50, 0);
 
   renderer.setSize(WIDTH, HEIGHT);
   renderer.shadowMap.enabled = true;
@@ -86,8 +86,8 @@ let map, hero, obstacle, gem;
 
 const createMap = () =>{
   map = new Map({
-    radius: 100,
-    height: 10,
+    radius: 300,
+    height: 300,
     radailSegments: 40,
     color: Colors.green,
     speed: 0.01
@@ -103,6 +103,7 @@ const createHero = () =>{
     radius: 10,
     details: 2 ,
     color: Colors.red,
+    speed: 0.02,
     jumpStrength: map.gravity*10,
     bounciness: .7
   });
@@ -119,7 +120,6 @@ const createObstacle = () =>{
     startAngle: drawRandom(180, 360)
   });
   obstacle.aboveMapHeight = drawRandom(0-obstacle.radius/2, obstacle.radius/2),
-
   scene.add(obstacle.mesh);
 }
 
@@ -156,10 +156,12 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'KeyD' : 
       Keys.d.pressed = true;
+      map.speed = hero.speed;
+      hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
       break;
     case 'Space' : 
       if(!hero.jumping) {
-        Keys.space.pressed = true;
+        // Keys.space.pressed = true;
         hero.velocity.y = hero.jumpStrength;
         hero.jumping = true;
       };
@@ -174,9 +176,11 @@ window.addEventListener('keyup', (event) => {
       break;
     case 'KeyD' : 
       Keys.d.pressed = false;
+      map.speed = 0.01;
+      hero.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*hero.radius));
       break;
     case 'Space' : 
-      Keys.space.pressed = false;
+      // Keys.space.pressed = false;
       break;
   }
 });

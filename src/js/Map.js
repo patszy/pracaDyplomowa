@@ -11,7 +11,7 @@ class Map {
     position = {x: 0, y: 0, z: 0},
   }) {
     this.geometry = new THREE.CylinderGeometry(radius, radius, height, radailSegments);
-    this.material = new THREE.MeshLambertMaterial({color, transparent: true, opacity: .5, flatShading: true});
+    this.material = new THREE.MeshLambertMaterial({color, flatShading: true});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.receiveShadow = true;
 

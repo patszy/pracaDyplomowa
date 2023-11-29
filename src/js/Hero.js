@@ -8,6 +8,7 @@ class Hero {
     color = `#0000ff`,
     shininess = 0,
     rotationSpeed = 0,
+    speed = 0,
     velocity = {x:0, y:1, z:0},
     position = {x: 0, y: 0, z:0},
     bounciness = 1,
@@ -23,6 +24,7 @@ class Hero {
     this.radius = radius;
     this.velocity = velocity;
     this.rotationSpeed = rotationSpeed;
+    this.speed = speed;
     this.bounciness = bounciness;
     this.jumpStrength = jumpStrength;
     this.jumping = jumping;
