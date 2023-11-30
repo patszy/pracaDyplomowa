@@ -56,7 +56,8 @@ class Hero {
     this.getSides();
 
     // this.mesh.position.x += this.velocity.x;
-    this.mesh.rotation.z -= this.rotationSpeed;
+    if(map.reverse) this.mesh.rotation.z += this.rotationSpeed;
+    else this.mesh.rotation.z -= this.rotationSpeed
 
     this.applyGravity(map)
   }

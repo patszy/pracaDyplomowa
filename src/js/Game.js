@@ -1,27 +1,21 @@
 class Game {
   constructor({
-    gravity = 0,
-    speed = 0,
-    jumpPower = 0,
-    heroInitialPosition = {
-      x: 0,
-      y: 0,
-      z: 0,
-    },
-    width = window.innerWidth,
-    height = window.innerHeight
+    status = `play`,
+    initialMapSpeed = 0,
+    levelUpSpeed = 0,
+    health = 0,
   }){
-    this.gravity = gravity;
-    this.speed = speed;
-    this.jumpPower = jumpPower;
-    this.heroInitialPosition = heroInitialPosition;
-    this.width = width;
-    this.height = height;
+    this.status = status;
+    this.initialMapSpeed = initialMapSpeed;
+    this.levelUpSpeed = levelUpSpeed;
+    this.health = health;
   }
 
-  setWidthHeight = () => {
-    this.width = window.innerWidth;
-    this.height = window.innerHeight;
+  stopGame(map, hero) {
+    this.status = `stop`;
+    hero.rotationSpeed = 0;
+    hero.jumpStrength = 0;
+    map.speed = 0;
   }
 }
 

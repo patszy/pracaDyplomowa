@@ -46,7 +46,7 @@ class Gem {
     this.back = this.mesh.position.z - this.radius;
   }
 
-  updatePosition(map, hero) {
+  updatePosition(map, hero, Game) {
     this.getSides();
 
     this.mesh.rotation.y -= this.rotationSpeed;
@@ -58,6 +58,8 @@ class Gem {
     if(checkSphereCollision({ obj1: this, obj2: hero })) {
       this.respawn();
       this.updatePosition(map, hero);
+      map.speed += Game.levelUpSpeed;
+      hero.setRotationSpeed(map);
     }
   }
 

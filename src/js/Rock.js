@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { checkSphereCollision, degreeToRadians } from './functions';
+import { checkSphereCollision, degreeToRadians, drawRandom } from './functions';
 
-class Obstacle {
+class Rock {
   constructor({
     radius = 1,
     details = 0,
@@ -43,7 +43,7 @@ class Obstacle {
     this.back = this.mesh.position.z - this.radius;
   }
 
-  updatePosition(map, hero) {
+  updatePosition(map, hero, game) {
     this.getSides();
 
     this.velocity.x = this.velocity.y += map.speed;
@@ -51,10 +51,41 @@ class Obstacle {
     this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
 
-    if(checkSphereCollision({ obj1: this, obj2: hero })) {
-      hero.velocity.y = hero.jumpStrength;
+    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) {
+      this.respawn(hero);
     }
+    
+    if(checkSphereCollision({ obj1: this, obj2: hero })) {
+      if(!map.reverse) {
+        map.speed = -map.speed*5;
+        map.reverse = true;
+        map.reverseTo = map.mesh.rotation.y - degreeToRadians(45);
+        hero.setRotationSpeed(map);
+        game.health--;
+        if(game.health < 0) {
+          game.stopGame(map, hero);
+        }
+      }
+      hero.velocity.y = hero.jumpStrength/2;
+    }
+    
+    if(map.mesh.rotation.y < map.reverseTo) {
+      if(map.reverse) {
+        map.speed = -map.speed/5;
+        hero.setRotationSpeed(map);
+        map.reverse = false;
+      }
+    }
+    
+  }
+
+  respawn(hero) {
+    this.startAngle = drawRandom(180, 360);
+    this.velocity.x = this.velocity.y = 0;
+    this.radius = drawRandom(hero.radius, hero.jumpStrength*4),
+    this.mesh.geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
+    this.aboveMapHeight = drawRandom(-this.radius/2, this.radius/2);
   }
 }
 
-export default Obstacle;
+export default Rock;

@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-// import Game from './Game';
+import Game from './Game';
 import Map from './Map';
 import Hero from './Hero';
-import Obstacle from './Obstacle';
+import Rock from './Rock';
 import Gem from './Gem';
 import { handleWindowResize, drawRandom, checkBoxCollision, checkSphereCollision, checkMapBorderCollision } from './functions';
 
@@ -26,8 +26,14 @@ const Colors = {
 
 //INIT GAME START VARIABLES
 
-const Game = {
-  initialMapSpeed: 0.01,
+let game;
+
+const createGame = () => {
+  game = new Game({
+    initialMapSpeed: 0.01,
+    levelUpSpeed: 0.001,
+    health: 2,
+  });
 }
 
 //THREE.JS NECESSARY VARIABLES
@@ -86,17 +92,17 @@ const createLights = () => {
   scene.add(ambientLight, hemisphereLight, pointLight);
 }
 
-//INIT HERO, MAP, OBSTACLE
+//INIT HERO, MAP, ROCK
 
-let map, hero, obstacle, gem;
+let map, hero, rock, gem;
 
 const createMap = () =>{
   map = new Map({
-    radius: 300,
-    height: 300,
+    radius: 500,
+    height: 1000 ,
     radailSegments: 40,
     color: Colors.green,
-    speed: Game.initialMapSpeed,
+    speed: game.initialMapSpeed,
     gravity: 0.5
   });
   map.setHorizontally();
@@ -119,15 +125,15 @@ const createHero = () =>{
   scene.add(hero.mesh);
 }
 
-const createObstacle = () =>{
-  obstacle = new Obstacle({
+const createRock = () =>{
+  rock= new Rock({
     radius: drawRandom(hero.radius, hero.jumpStrength*4),
     color: Colors.gray,
     rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
     startAngle: drawRandom(180, 360)
   });
-  obstacle.aboveMapHeight = drawRandom(0-obstacle.radius/2, obstacle.radius/2),
-  scene.add(obstacle.mesh);
+  rock.aboveMapHeight = drawRandom(-rock.radius/2, rock.radius/2),
+  scene.add(rock.mesh);
 }
 
 const createGem = () =>{
@@ -163,8 +169,10 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'KeyD' : 
       // Keys.d.pressed = true;
-      map.speed = hero.speed;
-      hero.setRotationSpeed(map);
+      if(game.status != `stop`){
+        map.speed = hero.speed;
+        hero.setRotationSpeed(map);
+      }
       break;
     case 'Space' : 
       if(!hero.jumping) {
@@ -183,8 +191,10 @@ window.addEventListener('keyup', (event) => {
       break;
     case 'KeyD' : 
       // Keys.d.pressed = false;
-      map.speed = Game.initialMapSpeed;
-      hero.setRotationSpeed(map);
+      if(game.status != `stop`){
+        map.speed = game.initialMapSpeed;
+        hero.setRotationSpeed(map);
+      }
       break;
     case 'Space' : 
       // Keys.space.pressed = false;
@@ -196,20 +206,21 @@ window.addEventListener('keyup', (event) => {
 
 const animate = () => {
   map.updatePosition();
-  hero.updatePosition(map);
-  obstacle.updatePosition(map, hero);
-  gem.updatePosition(map, hero); 
+  hero.updatePosition(map, game);
+  rock.updatePosition(map, hero, game);
+  gem.updatePosition(map, hero, game); 
 
   renderer.render( scene, camera );
   requestAnimationFrame(animate);
 }
 
 const init = () => {
+  createGame();
   createScene();
   createLights();
   createMap();
   createHero();
-  createObstacle();
+  createRock();
   createGem();
 
   animate();
