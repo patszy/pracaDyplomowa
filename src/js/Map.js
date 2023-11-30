@@ -8,8 +8,6 @@ class Map {
     color = `#00ff00`,
     gravity = 1,
     speed = 0,
-    reverse = false,
-    reverseTo = 0,
     position = {x: 0, y: 0, z: 0},
   }) {
     this.geometry = new THREE.CylinderGeometry(radius, radius, height, radailSegments);
@@ -22,8 +20,6 @@ class Map {
     this.radailSegments = radailSegments;
     this.gravity = gravity;
     this.speed = speed;
-    this.reverse = reverse;
-    this.reverseTo = reverseTo;
     
     this.mesh.position.set(position.x, position.y, position.z);
 

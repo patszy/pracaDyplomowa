@@ -11,11 +11,9 @@ class Game {
     this.health = health;
   }
 
-  stopGame(map, hero) {
-    this.status = `stop`;
-    hero.rotationSpeed = 0;
-    hero.jumpStrength = 0;
-    map.speed = 0;
+  stopGame(hero) {
+    hero.mesh.position.x -= 2;
+    hero.mesh.position.z += 5;
   }
 }
 

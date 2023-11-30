@@ -51,32 +51,12 @@ class Rock {
     this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
 
-    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) {
-      this.respawn(hero);
-    }
-    
+    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.respawn(hero);
     if(checkSphereCollision({ obj1: this, obj2: hero })) {
-      if(!map.reverse) {
-        map.speed = -map.speed*5;
-        map.reverse = true;
-        map.reverseTo = map.mesh.rotation.y - degreeToRadians(45);
-        hero.setRotationSpeed(map);
-        game.health--;
-        if(game.health < 0) {
-          game.stopGame(map, hero);
-        }
-      }
       hero.velocity.y = hero.jumpStrength/2;
+      game.status = `stop`;
     }
-    
-    if(map.mesh.rotation.y < map.reverseTo) {
-      if(map.reverse) {
-        map.speed = -map.speed/5;
-        hero.setRotationSpeed(map);
-        map.reverse = false;
-      }
-    }
-    
+    if(game.status === `stop`) game.stopGame(hero);
   }
 
   respawn(hero) {

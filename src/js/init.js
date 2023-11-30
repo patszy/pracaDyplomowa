@@ -60,7 +60,7 @@ const createScene = () => {
   controls = new OrbitControls(camera, renderer.domElement);
 
   scene.fog = new THREE.Fog(Colors.gray, 100, 500);
-  camera.position.set(0, 50, 150);
+  camera.position.set(-150, 100, 0);
   camera.lookAt(0, 50, 0);
 
   renderer.setSize(WIDTH, HEIGHT);
