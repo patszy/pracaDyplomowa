@@ -21,7 +21,6 @@ const Colors = {
   pink: `#ff8fa3`,
   brownDark: `#432818`,
   gray: `#6c757d`,
-  
 };
 
 //INIT GAME START VARIABLES
@@ -32,7 +31,7 @@ const createGame = () => {
   game = new Game({
     initialMapSpeed: 0.01,
     levelUpSpeed: 0.001,
-    health: 2,
+    health: 100,
   });
 }
 
@@ -151,6 +150,9 @@ const createGem = () =>{
 //EVENT LISTENERS
 
 const Keys = {
+  w: {
+    pressed: false
+  },
   a: {
     pressed: false
   },
@@ -167,8 +169,8 @@ window.addEventListener('keydown', (event) => {
     case 'KeyA' : 
       Keys.a.pressed = true;
       break;
-    case 'KeyD' : 
-      // Keys.d.pressed = true;
+    case 'KeyW' : 
+      // Keys.w.pressed = true;
       if(game.status != `stop`){
         map.speed = hero.speed;
         hero.setRotationSpeed(map);
@@ -189,8 +191,8 @@ window.addEventListener('keyup', (event) => {
     case 'KeyA' : 
       Keys.a.pressed = false;
       break;
-    case 'KeyD' : 
-      // Keys.d.pressed = false;
+    case 'KeyW' : 
+      // Keys.w.pressed = false;
       if(game.status != `stop`){
         map.speed = game.initialMapSpeed;
         hero.setRotationSpeed(map);
@@ -208,8 +210,7 @@ const animate = () => {
   map.updatePosition();
   hero.updatePosition(map, game);
   rock.updatePosition(map, hero, game);
-  gem.updatePosition(map, hero, game); 
-
+  gem.updatePosition(map, hero, game);
   renderer.render( scene, camera );
   requestAnimationFrame(animate);
 }

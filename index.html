@@ -7,5 +7,28 @@
   <link rel="stylesheet" href="./src/css/styles.css">
   <script src="./src/js/main.js" type="module" defer></script>
 </head>
-<body></body>
+<body>
+  <div class="game-info">
+    <header>
+      <h1><span>the</span>Ball</h1>
+      <p>go as far as you can</p>
+    </header>
+    <main>
+      <div class="score__elem" id="level">
+        <p class="score__text">level <span class="score__value" id="levelValue">1</span></p>
+      </div>
+      <div class="score__elem">
+        <p class="score__text">score <span class="score__value" id="scoreValue">0</span></p>
+      </div>
+      <div class="score__elem" id="hp">
+        <p class="score__text">heal points <span class="score__value" id="hpValue">100%</span></p>
+        <div class="score__value__bar" id="hpBar"></div>
+      </div>
+      <div class="message__restart" id="restartMessage">Click to Replay</div>
+    </main>
+    <footer>
+      <div class="message__instructions">Pick up the blue gems<span>avoid the rocks</span></div>
+    </footer>
+  </div>
+</body>
 </html>

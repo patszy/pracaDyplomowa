@@ -54,9 +54,9 @@ class Rock {
     if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.respawn(hero);
     if(checkSphereCollision({ obj1: this, obj2: hero })) {
       hero.velocity.y = hero.jumpStrength/2;
-      game.status = `stop`;
+      game.updateHealth(this);
     }
-    if(game.status === `stop`) game.stopGame(hero);
+    if(game.health <=0) game.stopGame(hero);
   }
 
   respawn(hero) {

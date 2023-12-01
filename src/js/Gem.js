@@ -46,7 +46,7 @@ class Gem {
     this.back = this.mesh.position.z - this.radius;
   }
 
-  updatePosition(map, hero, Game) {
+  updatePosition(map, hero, game) {
     this.getSides();
 
     this.mesh.rotation.y -= this.rotationSpeed;
@@ -56,14 +56,14 @@ class Gem {
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
     
     if(checkSphereCollision({ obj1: this, obj2: hero })) {
-      this.respawn();
+      this.spawn();
       this.updatePosition(map, hero);
-      map.speed += Game.levelUpSpeed;
+      game.updateScore(map);
       hero.setRotationSpeed(map);
     }
   }
 
-  respawn() {
+  spawn() {
     this.startAngle = drawRandom(180, 360);
     this.velocity.x = this.velocity.y = 0;
   }
