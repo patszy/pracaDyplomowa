@@ -2,12 +2,14 @@ class Game {
   constructor({
     status = `restart`,
     initialMapSpeed = 0,
-    levelUpSpeed = 0,
+    levelUpMapSpeed = 0,
+    levelUpSpeed = 2,
     health = 0,
     level = 1
   }){
     this.status = status;
     this.initialMapSpeed = initialMapSpeed;
+    this.levelUpMapSpeed = levelUpMapSpeed;
     this.levelUpSpeed = levelUpSpeed;
     this.health = health;
     this.level = level;
@@ -30,9 +32,9 @@ class Game {
   updateScore(map) {
     this.score++;
     this.scoreValue.innerText = this.score;
-    if(this.score % 10 == 0) {
+    if(this.score % this.levelUpSpeed == 0) {
       this.level ++;
-      map.speed += this.levelUpSpeed;
+      map.speed += this.levelUpMapSpeed;
       this.levelValue.innerText = `${this.level}`;
     }
   }

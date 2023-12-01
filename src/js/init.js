@@ -30,7 +30,7 @@ let game;
 const createGame = () => {
   game = new Game({
     initialMapSpeed: 0.01,
-    levelUpSpeed: 0.001,
+    levelUpMapSpeed: 0.001,
     health: 100,
   });
 }
@@ -98,7 +98,7 @@ let map, hero, rock, gem;
 const createMap = () =>{
   map = new Map({
     radius: 500,
-    height: 1000 ,
+    height: 1000,
     radailSegments: 40,
     color: Colors.green,
     speed: game.initialMapSpeed,
