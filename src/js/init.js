@@ -121,6 +121,7 @@ const createHero = () =>{
   });
   hero.setRotationSpeed(map);
   hero.mesh.position.y += hero.radius*2;
+  game.initialHeroPosition = {x:hero.mesh.position.x, y:hero.mesh.position.y, z:hero.mesh.position.z};
   scene.add(hero.mesh);
 }
 
@@ -171,12 +172,14 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'KeyW' : 
       // Keys.w.pressed = true;
-      if(game.status != `stop`){
+      if(game.playStatus){
         map.speed = hero.speed;
         hero.setRotationSpeed(map);
       }
       break;
-    case 'Space' : 
+    case 'Space' :
+      if(!game.playStatus) game.startGame(map, hero);
+
       if(!hero.jumping) {
         // Keys.space.pressed = true;
         hero.velocity.y = hero.jumpStrength;
@@ -193,10 +196,8 @@ window.addEventListener('keyup', (event) => {
       break;
     case 'KeyW' : 
       // Keys.w.pressed = false;
-      if(game.status != `stop`){
         map.speed = game.initialMapSpeed;
         hero.setRotationSpeed(map);
-      }
       break;
     case 'Space' : 
       // Keys.space.pressed = false;

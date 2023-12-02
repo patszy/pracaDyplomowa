@@ -56,7 +56,7 @@ class Rock {
       hero.velocity.y = hero.jumpStrength/2;
       game.updateHealth(this);
     }
-    if(game.health <=0) game.stopGame(hero);
+    if(game.health <= 0) game.stopGame(hero);
   }
 
   respawn(hero) {
