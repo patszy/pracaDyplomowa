@@ -5,7 +5,7 @@ import Map from './Map';
 import Hero from './Hero';
 import Rock from './Rock';
 import Gem from './Gem';
-import { handleWindowResize, drawRandom, checkBoxCollision, checkSphereCollision, checkMapBorderCollision } from './functions';
+import { handleWindowResize, drawRandom } from './functions';
 
 
 //INIT COLORS
@@ -22,18 +22,6 @@ const Colors = {
   brownDark: `#432818`,
   gray: `#6c757d`,
 };
-
-//INIT GAME START VARIABLES
-
-let game;
-
-const createGame = () => {
-  game = new Game({
-    initialMapSpeed: 0.01,
-    levelUpMapSpeed: 0.001,
-    health: 100,
-  });
-}
 
 //THREE.JS NECESSARY VARIABLES
 
@@ -59,7 +47,7 @@ const createScene = () => {
   controls = new OrbitControls(camera, renderer.domElement);
 
   scene.fog = new THREE.Fog(Colors.gray, 100, 500);
-  camera.position.set(-150, 100, 0);
+  camera.position.set(-100, 100, 50);
   camera.lookAt(0, 50, 0);
 
   renderer.setSize(WIDTH, HEIGHT);
@@ -91,17 +79,24 @@ const createLights = () => {
   scene.add(ambientLight, hemisphereLight, pointLight);
 }
 
-//INIT HERO, MAP, ROCK
+//INIT GAME, HERO, MAP, ROCK, GEM
 
-let map, hero, rock, gem;
+let game, map, hero, rock, gem;
+
+const createGame = () => {
+  game = new Game({
+    initialMapSpeed: 0.01,
+    levelUpMapSpeed: 0.001,
+    health: 100,
+  });
+}
 
 const createMap = () =>{
   map = new Map({
-    radius: 500,
-    height: 1000,
-    radailSegments: 40,
+    radius: 300,
+    details: 50,
     color: Colors.green,
-    speed: game.initialMapSpeed,
+    velocity: game.initialMapSpeed,
     gravity: 0.5
   });
   map.setHorizontally();
@@ -127,10 +122,10 @@ const createHero = () =>{
 
 const createRock = () =>{
   rock= new Rock({
-    radius: drawRandom(hero.radius, hero.jumpStrength*4),
+    radius: drawRandom(hero.radius, hero.jumpStrength*3),
     color: Colors.gray,
     rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
-    startAngle: drawRandom(180, 360)
+    startAngle: drawRandom(270, 360)
   });
   rock.aboveMapHeight = drawRandom(-rock.radius/2, rock.radius/2),
   scene.add(rock.mesh);
@@ -142,8 +137,8 @@ const createGem = () =>{
     color: Colors.blue,
     rotationSpeed: 0.03,
     rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
-    aboveMapHeight: drawRandom(30, 70),
-    startAngle: drawRandom(180, 360)
+    aboveMapHeight: drawRandom(hero.radius*3, 60),
+    startAngle: drawRandom(270, 360)
   });
   scene.add(gem.mesh);
 }
@@ -154,12 +149,6 @@ const Keys = {
   w: {
     pressed: false
   },
-  a: {
-    pressed: false
-  },
-  d: {
-    pressed: false
-  },
   space: {
     pressed: false
   }
@@ -167,40 +156,22 @@ const Keys = {
 
 window.addEventListener('keydown', (event) => {
   switch(event.code) {
-    case 'KeyA' : 
-      Keys.a.pressed = true;
-      break;
     case 'KeyW' : 
-      // Keys.w.pressed = true;
-      if(game.playStatus){
-        map.speed = hero.speed;
-        hero.setRotationSpeed(map);
-      }
+      Keys.w.pressed = true;
       break;
     case 'Space' :
-      if(!game.playStatus) game.startGame(map, hero);
-
-      if(!hero.jumping) {
-        // Keys.space.pressed = true;
-        hero.velocity.y = hero.jumpStrength;
-        hero.jumping = true;
-      };
+      Keys.space.pressed = true;
       break;
   }
 });
 
 window.addEventListener('keyup', (event) => {
   switch(event.code) {
-    case 'KeyA' : 
-      Keys.a.pressed = false;
-      break;
     case 'KeyW' : 
-      // Keys.w.pressed = false;
-        map.speed = game.initialMapSpeed;
-        hero.setRotationSpeed(map);
+      Keys.w.pressed = false;
       break;
     case 'Space' : 
-      // Keys.space.pressed = false;
+      Keys.space.pressed = false;
       break;
   }
 });
@@ -209,7 +180,7 @@ window.addEventListener('keyup', (event) => {
 
 const animate = () => {
   map.updatePosition();
-  hero.updatePosition(map, game);
+  hero.updatePosition(map, game, Keys);
   rock.updatePosition(map, hero, game);
   gem.updatePosition(map, hero, game);
   renderer.render( scene, camera );

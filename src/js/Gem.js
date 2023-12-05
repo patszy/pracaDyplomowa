@@ -55,16 +55,17 @@ class Gem {
     this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
     
-    if(checkSphereCollision({ obj1: this, obj2: hero })) {
-      this.spawn();
+    if(checkSphereCollision(this, hero)) {
+      this.spawn(hero);
       this.updatePosition(map, hero);
       game.updateScore(map);
       hero.setRotationSpeed(map);
     }
   }
 
-  spawn() {
-    this.startAngle = drawRandom(180, 360);
+  spawn(hero) {
+    this.startAngle = drawRandom(270, 360);
+    this.aboveMapHeight =  drawRandom(hero.radius*3, 60),
     this.velocity.x = this.velocity.y = 0;
   }
 }

@@ -51,18 +51,18 @@ class Rock {
     this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
 
-    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.respawn(hero);
-    if(checkSphereCollision({ obj1: this, obj2: hero })) {
+    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.spawn(hero);
+    if(checkSphereCollision(this, hero)) {
       hero.velocity.y = hero.jumpStrength/2;
       game.updateHealth(this);
     }
     if(game.health <= 0) game.stopGame(hero);
   }
 
-  respawn(hero) {
-    this.startAngle = drawRandom(180, 360);
+  spawn(hero) {
+    this.startAngle = drawRandom(270, 360);
     this.velocity.x = this.velocity.y = 0;
-    this.radius = drawRandom(hero.radius, hero.jumpStrength*4),
+    this.radius = drawRandom(hero.radius, hero.jumpStrength*3),
     this.mesh.geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
     this.aboveMapHeight = drawRandom(-this.radius/2, this.radius/2);
   }
