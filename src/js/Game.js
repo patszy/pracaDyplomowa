@@ -1,8 +1,10 @@
+import * as THREE from 'three';
+
 class Game {
   constructor({
     playStatus = true,
     initialMapSpeed = 0,
-    initialHeroPosition = {x: 0, y: 0, z:0},
+    initialHeroPosition = new THREE.Vector3(0, 0, 0),
     levelUpMapSpeed = 0,
     levelUpSpeed = 1,
     health = 0,
@@ -25,7 +27,7 @@ class Game {
 
   startGame(map, hero) {
     hero.mesh.position.set(this.initialHeroPosition.x, this.initialHeroPosition.y, this.initialHeroPosition.z);
-    map.velocity = this.initialMapSpeed;
+    map.rotationSpeed = this.initialMapSpeed;
     this.health = 100;
     this.score = 0;
     this.level = 1;
@@ -48,7 +50,7 @@ class Game {
     this.scoreValue.innerText = this.score;
     if(this.score % this.levelUpSpeed == 0) {
       this.level ++;
-      map.velocity += this.levelUpMapSpeed;
+      map.rotationSpeed += this.levelUpMapSpeed;
       this.levelValue.innerText = this.level;
     }
   }

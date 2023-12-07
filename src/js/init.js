@@ -96,7 +96,7 @@ const createMap = () =>{
     radius: 300,
     details: 50,
     color: Colors.green,
-    velocity: game.initialMapSpeed,
+    rotationSpeed: game.initialMapSpeed,
     gravity: 0.5
   });
   map.setHorizontally();
@@ -112,11 +112,11 @@ const createHero = () =>{
     color: Colors.red,
     speed: 0.02,
     jumpStrength: 7,
-    bounciness: .7
+    bounciness: .7 
   });
   hero.setRotationSpeed(map);
   hero.mesh.position.y += hero.radius*2;
-  game.initialHeroPosition = {x:hero.mesh.position.x, y:hero.mesh.position.y, z:hero.mesh.position.z};
+  game.initialHeroPosition = new THREE.Vector3(hero.mesh.position.x, hero.mesh.position.y, hero.mesh.position.z);
   scene.add(hero.mesh);
 }
 

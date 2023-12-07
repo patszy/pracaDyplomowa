@@ -11,8 +11,8 @@ class Gem {
     rotationCenter = new THREE.Vector3(0, 0, 0),
     startAngle = 0,
     aboveMapHeight = 0,
-    velocity = {x:0, y:0, z:0},
-    position = {x: 0, y: 0, z:0}
+    velocity = new THREE.Vector3(0, 0, 0),
+    position = new THREE.Vector3(0, 0, 0)
   }) {
     this.geometry = new THREE.OctahedronGeometry(radius, details);
     this.material = new THREE.MeshPhongMaterial({color, shininess, flatShading: true});

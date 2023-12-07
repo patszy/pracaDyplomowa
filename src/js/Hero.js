@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { checkBoxCollision } from './functions';
+import { checkSphereCollision } from './functions';
 
 class Hero {
   constructor({
@@ -9,8 +9,8 @@ class Hero {
     shininess = 0,
     rotationSpeed = 0,
     speed = 0,
-    velocity = {x:0, y:1, z:0},
-    position = {x: 0, y: 0, z:0},
+    velocity = new THREE.Vector3(0, 1, 0),
+    position = new THREE.Vector3(0, 0, 0),
     bounciness = 1,
     jumpStrength = 1,
     jumping = false,
@@ -56,8 +56,8 @@ class Hero {
     this.getSides();
 
     if(Keys.w.pressed) {
-      if(game.playStatus) map.speed = map.velocity*2;
-    } else map.speed = map.velocity;
+      if(game.playStatus) map.speed = map.rotationSpeed*2;
+    } else map.speed = map.rotationSpeed;
     
     this.setRotationSpeed(map);
 
@@ -77,8 +77,16 @@ class Hero {
 
   applyGravity(map) {
     this.velocity.y -= map.gravity;
+
+    // if(checkBoxCollision(this, map).y) {
+    //   this.jumping = false;
+    //   this.velocity.y *= this.bounciness;
+    //   this.velocity.y = -this.velocity.y;
+    // } else {
+    //   this.mesh.position.y += this.velocity.y;
+    // }
     
-    if(checkBoxCollision(this, map).y) {
+    if(checkSphereCollision(this, map)) {
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;
