@@ -9,11 +9,11 @@ class Hero {
     shininess = 0,
     rotationSpeed = 0,
     speed = 0,
-    velocity = new THREE.Vector3(0, 1, 0),
-    position = new THREE.Vector3(0, 0, 0),
     bounciness = 1,
     jumpStrength = 1,
     jumping = false,
+    velocity = new THREE.Vector3(0, 1, 0),
+    position = new THREE.Vector3(0, 0, 0),
   }) {
     this.geometry = new THREE.IcosahedronGeometry(radius, details);
     this.material = new THREE.MeshPhongMaterial({color, shininess, flatShading: true});
