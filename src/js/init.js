@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import Game from './Game';
-import Map from './Map';
-import Hero from './Hero';
-import Rock from './Rock';
-import Gem from './Gem';
+import Game from './gameClasses/Game';
+import Map from './gameClasses/Map';
+import Hero from './gameClasses/Hero';
+import Rock from './gameClasses/Rock';
+import Gem from './gameClasses/Gem';
 import { handleWindowResize, drawRandom } from './functions';
 
 
@@ -101,7 +101,6 @@ const createMap = () =>{
   });
   map.setHorizontally();
   map.mesh.position.y -= map.radius;
-  map.getSides();
   scene.add(map.mesh);
 }
 
@@ -116,7 +115,7 @@ const createHero = () =>{
   });
   hero.setRotationSpeed(map);
   hero.mesh.position.y += hero.radius*2;
-  game.initialHeroPosition = new THREE.Vector3(hero.mesh.position.x, hero.mesh.position.y, hero.mesh.position.z);
+  game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
   scene.add(hero.mesh);
 }
 
@@ -124,7 +123,7 @@ const createRock = () =>{
   rock= new Rock({
     radius: drawRandom(hero.radius, hero.jumpStrength*3),
     color: Colors.gray,
-    rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
+    rotationCenter: new THREE.Vector3(...map.mesh.position),
     startAngle: drawRandom(270, 360)
   });
   rock.aboveMapHeight = drawRandom(-rock.radius/2, rock.radius/2),
@@ -136,7 +135,7 @@ const createGem = () =>{
     radius: 5,
     color: Colors.blue,
     rotationSpeed: 0.03,
-    rotationCenter: new THREE.Vector3(map.mesh.position.x, map.mesh.position.y, map.mesh.position.z),
+    rotationCenter: new THREE.Vector3(...map.mesh.position),
     aboveMapHeight: drawRandom(hero.radius*3, 60),
     startAngle: drawRandom(270, 360)
   });
