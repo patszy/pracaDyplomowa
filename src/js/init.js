@@ -14,6 +14,7 @@ const createGame = () => {
   game = new Game({
     initialMapSpeed: 0.01,
     levelUpMapSpeed: 0.001,
+    // levelUpSpeed: 2,
     health: 100,
   });
   game.createScene();
