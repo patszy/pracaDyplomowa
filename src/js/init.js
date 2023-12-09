@@ -46,7 +46,7 @@ const createScene = () => {
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   controls = new OrbitControls(camera, renderer.domElement);
 
-  scene.fog = new THREE.Fog(Colors.gray, 100, 500);
+  scene.fog = new THREE.Fog(Colors.white, 200, 500);
   camera.position.set(-100, 100, 50);
   camera.lookAt(0, 50, 0);
 
