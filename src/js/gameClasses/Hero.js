@@ -30,14 +30,14 @@ class Hero extends GameElement{
     this.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*this.radius));
   }
 
-  updatePosition(map, game, Keys) {
-    if(Keys.w.pressed) {
+  updatePosition(map, game) {
+    if(game.keys.go) {
       if(game.playStatus) map.speed = map.rotationSpeed*2;
     } else map.speed = map.rotationSpeed;
     
     this.setRotationSpeed(map);
 
-    if(Keys.space.pressed) {
+    if(game.keys.jump) {
       if(!game.playStatus) game.startGame(map, this);
       if(!this.jumping) {
         this.velocity.y = this.jumpStrength;

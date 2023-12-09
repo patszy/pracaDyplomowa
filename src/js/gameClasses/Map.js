@@ -16,8 +16,6 @@ class Map extends GameElement{
     });
 
     this.gravity = gravity;
-
-    this.mesh.castShadow = true;
   }
   
   setHorizontally() {

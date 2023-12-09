@@ -7,12 +7,6 @@ const checkSphereCollision = (obj1, obj2) => {
   return false;
 }
 
-const handleWindowResize = (camera, renderer) => {
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-}
-
 const drawRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
@@ -21,4 +15,4 @@ function degreeToRadians(degree) {
   return (Math.PI / 180) * degree;
 }
 
-export { checkSphereCollision, handleWindowResize, drawRandom, degreeToRadians };
+export { checkSphereCollision, drawRandom, degreeToRadians };
