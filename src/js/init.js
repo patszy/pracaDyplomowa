@@ -4,11 +4,12 @@ import Map from './gameClasses/Map';
 import Hero from './gameClasses/Hero';
 import Rock from './gameClasses/Rock';
 import Gem from './gameClasses/Gem';
+import Cloud from './gameClasses/Cloud';
 import { drawRandom } from './functions';
 
 //INIT GAME, HERO, MAP, ROCK, GEM
 
-let game, map, hero, rock, gem;
+let game, map, hero, rock, gem, cloudHolder=[];
 
 const createGame = () => {
   game = new Game({
@@ -68,6 +69,18 @@ const createGem = () =>{
   game.scene.add(gem.mesh);
 }
 
+const createCloud = () =>{
+  for(let i=0; i<50; i++){
+    cloudHolder[i] = new Cloud({
+      radius: drawRandom(10, 20),
+      color: game.blue,
+      rotationCenter: new THREE.Vector3(...map.mesh.position),
+      startAngle: drawRandom(0, 360),
+    });
+    game.scene.add(cloudHolder[i].mesh);
+  }
+}
+
 //ANIMATION LOOP
 
 const animate = () => {
@@ -75,6 +88,9 @@ const animate = () => {
   hero.updatePosition(map, game);
   rock.updatePosition(map, hero, game);
   gem.updatePosition(map, hero, game);
+  for(let i=0; i<cloudHolder.length; i++){
+    cloudHolder[i].updatePosition(map);
+  }
   game.renderer.render(game.scene, game.camera);
   
   requestAnimationFrame(animate);
@@ -86,6 +102,7 @@ const init = () => {
   createHero();
   createRock();
   createGem();
+  createCloud();
 
   animate();
 }

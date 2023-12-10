@@ -26,6 +26,7 @@ class MapElement extends GameObject {
 
     this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
     this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
+    this.mesh.position.z = this.position.z;
   }
 
   spawn() {
