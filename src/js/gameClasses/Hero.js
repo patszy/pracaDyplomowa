@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import GameElement from '../abstractClasses/GameElement';
-import { checkSphereCollision } from '../functions';
+import { checkSphereCollision, circleCircumference } from '../functions';
 
 class Hero extends GameElement{
   constructor({
-    shininess = 0,
+    shininess = 100,
     bounciness = 1,
     jumpStrength = 1,
     jumping = false,
@@ -23,11 +23,12 @@ class Hero extends GameElement{
     this.jumpStrength = jumpStrength;
     this.jumping = jumping;
 
+    this.mesh.position.y = this.radius*2;
     this.mesh.castShadow = true;
   }
 
-  setRotationSpeed(map) {
-    this.rotationSpeed = map.speed*((2*Math.PI*map.radius)/(2*Math.PI*this.radius));
+  setRotationSpeed(map){
+    this.rotationSpeed = map.speed*(circleCircumference(map.radius) / circleCircumference(this.radius));
   }
 
   updatePosition(map, game) {

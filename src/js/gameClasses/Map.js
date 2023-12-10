@@ -16,10 +16,12 @@ class Map extends GameElement{
     });
 
     this.gravity = gravity;
+
+    this.mesh.position.y = -this.radius;  
   }
   
   setHorizontally() {
-    this.mesh.rotateX(Math.PI / 2);    
+    this.mesh.rotateX(Math.PI / 2);
   }
 
   updatePosition() {

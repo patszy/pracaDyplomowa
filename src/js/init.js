@@ -30,7 +30,6 @@ const createMap = () =>{
     gravity: 0.5
   });
   map.setHorizontally();
-  map.mesh.position.y -= map.radius;
   game.scene.add(map.mesh);
 }
 
@@ -44,7 +43,6 @@ const createHero = () =>{
     bounciness: .7 
   });
   hero.setRotationSpeed(map);
-  hero.mesh.position.y += hero.radius*2;
   game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
   game.scene.add(hero.mesh);
 }
@@ -56,7 +54,6 @@ const createRock = () =>{
     rotationCenter: new THREE.Vector3(...map.mesh.position),
     startAngle: drawRandom(270, 360)
   });
-  rock.aboveMapHeight = drawRandom(-rock.radius/2, rock.radius/2),
   game.scene.add(rock.mesh);
 }
 
@@ -80,6 +77,7 @@ const animate = () => {
   rock.updatePosition(map, hero, game);
   gem.updatePosition(map, hero, game);
   game.renderer.render(game.scene, game.camera);
+  
   requestAnimationFrame(animate);
 }
 

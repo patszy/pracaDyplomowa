@@ -16,8 +16,11 @@ class Game {
     initialHeroPosition = new THREE.Vector3(0, 0, 0),
     levelUpMapSpeed = 0,
     levelUpSpeed = 1,
-    health = 0,
-    level = 1,
+    initStats = {
+      health: 100,
+      level: 1,
+      score: 0,
+    },
     keys = {
       go: false,
       jump: false
@@ -29,10 +32,8 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraVars = {
-      position: new THREE.Vector3(-100, 100, 50),
-      lookAt: new THREE.Vector3(0, 50, 0)
-    },
+    cameraPositon = new THREE.Vector3(-100, 100, 50),
+    cameraLookAt = new THREE.Vector3(0, 50, 0),
     lights = {
       ambientLight: {color: `#212529`, strength: 0.5},
       hemisphereLight: {skyColor: `#f8f9fa`, groundColor: `#212529`, strength: 0.5},
@@ -72,7 +73,8 @@ class Game {
     this.viewAngle = viewAngle,
     this.minGenerationField = minGenerationField,
     this.maxGenerationField = maxGenerationField,
-    this.cameraVars = cameraVars;
+    this.cameraPositon = cameraPositon;
+    this.cameraLookAt = cameraLookAt;
     this.lights = lights;
     this.fog = fog;
   
@@ -82,9 +84,8 @@ class Game {
     this.initialHeroPosition = initialHeroPosition;
     this.levelUpMapSpeed = levelUpMapSpeed;
     this.levelUpSpeed = levelUpSpeed;
-    this.health = health;
-    this.level = level;
-    this.score = 0;
+    this.initStats = initStats;
+    this.stats = {...initStats};
     this.levelValue = document.getElementById(`levelValue`);
     this.scoreValue = document.getElementById(`scoreValue`);
     this.scoreBar = document.getElementById(`hpBar`);
@@ -99,8 +100,8 @@ class Game {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
     this.scene.fog = new THREE.Fog(this.fog.color, this.fog.near, this.fog.far);
-    this.camera.position.set(...this.cameraVars.position);
-    this.camera.lookAt(this.cameraVars.lookAt);
+    this.camera.position.set(...this.cameraPositon);
+    this.camera.lookAt(this.cameraLookAt);
 
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.renderer.shadowMap.enabled = true;
@@ -168,13 +169,12 @@ class Game {
   startGame(map, hero) {
     hero.mesh.position.set(...this.initialHeroPosition);
     map.rotationSpeed = this.initialMapSpeed;
-    this.health = 100;
-    this.score = 0;
-    this.level = 1;
+
+    this.stats = {...this.initStats};
     this.messageRestart.style.display = `none`;
-    this.scoreValue.innerText = this.score;
-    this.levelValue.innerText = this.level;
-    this.hpValue.innerText = this.scoreBar.style.width = `${this.health}%`;
+    this.scoreValue.innerText = this.stats.score;
+    this.levelValue.innerText = this.stats.level;
+    this.hpValue.innerText = this.scoreBar.style.width = `${this.stats.health}%`;
     this.playStatus = true;
   }
 
@@ -186,19 +186,23 @@ class Game {
   }
 
   updateScore(map) {
-    this.score++;
-    this.scoreValue.innerText = this.score;
-    if(this.score % this.levelUpSpeed == 0) {
-      this.level ++;
+    this.stats.score++;
+    this.scoreValue.innerText = this.stats.score;
+    if(this.stats.score % this.levelUpSpeed == 0) {
+      this.stats.level ++;
       map.rotationSpeed += this.levelUpMapSpeed;
-      this.levelValue.innerText = this.level;
+      this.levelValue.innerText = this.stats.level;
     }
   }
 
   updateHealth(rock) {
-    this.health -= Math.round(rock.radius);
-    this.hpValue.innerText = this.scoreBar.style.width = `${this.health}%`;
-    if(this.health < 0 ) this.hpValue.innerText = this.scoreBar.style.width = `0%`;
+    this.stats.health -= Math.round(rock.radius);
+    this.hpValue.innerText = this.scoreBar.style.width = `${this.stats.health}%`;
+    if(this.stats.health < 0 ) this.hpValue.innerText = this.scoreBar.style.width = `0%`;
+  }
+
+  checkNoHealth(hero) {
+    if(this.stats.health <= 0) this.stopGame(hero);
   }
 }
 

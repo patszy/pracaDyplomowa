@@ -11,8 +11,12 @@ const drawRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-function degreeToRadians(degree) {
+const degreeToRadians = (degree) => {
   return (Math.PI / 180) * degree;
 }
 
-export { checkSphereCollision, drawRandom, degreeToRadians };
+const circleCircumference = (radius) => {
+  return 2*Math.PI*radius;
+}
+
+export { checkSphereCollision, drawRandom, degreeToRadians, circleCircumference };

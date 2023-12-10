@@ -4,11 +4,12 @@ import { checkSphereCollision, degreeToRadians, drawRandom } from '../functions'
 
 class Gem extends MapElement {
   constructor({
+    shininess = 1,
     rotationSpeed = 0,
     ...options
   }) {
     const geometry = new THREE.OctahedronGeometry(options.radius, options.details);
-    const material = new THREE.MeshPhongMaterial({ color: options.color, shininess: 1, flatShading: true });
+    const material = new THREE.MeshPhongMaterial({ color: options.color, shininess, flatShading: true });
 
     super({
       geometry: geometry,

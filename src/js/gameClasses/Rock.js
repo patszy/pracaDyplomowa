@@ -12,6 +12,8 @@ class Rock extends MapElement {
       material: material,
       ...options
     });
+
+    this.aboveMapHeight = drawRandom(-this.radius / 2, this.radius / 2);
   }
 
   updatePosition(map, hero, game) {
@@ -22,7 +24,7 @@ class Rock extends MapElement {
       hero.velocity.y = hero.jumpStrength/2;
       game.updateHealth(this);
     }
-    if(game.health <= 0) game.stopGame(hero);
+    game.checkNoHealth(hero);
   }
 
   spawn(hero) {
