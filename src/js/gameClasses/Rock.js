@@ -10,6 +10,8 @@ class Rock extends MapElement {
 
     this.geometry = new THREE.DodecahedronGeometry(options.radius, options.details);
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
   }
 
   updatePosition(map, hero, game) {

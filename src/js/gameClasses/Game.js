@@ -40,7 +40,7 @@ class Game {
       shadowLight: {
         color: `#f8f9fa`,
         strength: 1,
-        position: new THREE.Vector3(100, 300, 300),
+        position: new THREE.Vector3(100, 500, 500),
         left: -300,
         right: 300,
         top: 300,

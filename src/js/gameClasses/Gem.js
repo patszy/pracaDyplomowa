@@ -15,6 +15,8 @@ class Gem extends MapElement {
     this.geometry = new THREE.OctahedronGeometry(options.radius, options.details);
     this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
   }
 
   updatePosition(map, hero, game) {

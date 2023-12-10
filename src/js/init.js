@@ -72,7 +72,6 @@ const createGem = () =>{
 const createCloud = () =>{
   for(let i=0; i<50; i++){
     cloudHolder[i] = new Cloud({
-      radius: drawRandom(10, 20),
       color: game.blue,
       rotationCenter: new THREE.Vector3(...map.mesh.position),
       startAngle: drawRandom(0, 360),
