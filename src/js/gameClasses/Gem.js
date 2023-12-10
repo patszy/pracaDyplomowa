@@ -8,16 +8,13 @@ class Gem extends MapElement {
     rotationSpeed = 0,
     ...options
   }) {
-    const geometry = new THREE.OctahedronGeometry(options.radius, options.details);
-    const material = new THREE.MeshPhongMaterial({ color: options.color, shininess, flatShading: true });
-
-    super({
-      geometry: geometry,
-      material: material,
-      ...options
-    });
+    super(options);
 
     this.rotationSpeed = rotationSpeed;
+
+    this.geometry = new THREE.OctahedronGeometry(options.radius, options.details);
+    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
   }
 
   updatePosition(map, hero, game) {

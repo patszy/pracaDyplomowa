@@ -10,19 +10,14 @@ class Hero extends GameElement{
     jumping = false,
     ...options
   }) {
-    const geometry = new THREE.IcosahedronGeometry(options.radius, options.details);
-    const material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
-
-    super({
-      geometry: geometry,
-      material: material,
-      ...options
-    });
+    super(options);
 
     this.bounciness = bounciness;
     this.jumpStrength = jumpStrength;
     this.jumping = jumping;
 
+    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.y = this.radius*2;
     this.mesh.castShadow = true;
   }

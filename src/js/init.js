@@ -24,12 +24,11 @@ const createGame = () => {
 const createMap = () =>{
   map = new Map({
     radius: 300,
-    details: 50,
+    details: 5,
     color: game.green,
     rotationSpeed: game.initialMapSpeed,
     gravity: 0.5
   });
-  map.setHorizontally();
   game.scene.add(map.mesh);
 }
 

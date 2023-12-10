@@ -4,16 +4,12 @@ import { checkSphereCollision, degreeToRadians, drawRandom } from '../functions'
 
 class Rock extends MapElement {
   constructor(options) {
-    const geometry = new THREE.DodecahedronGeometry(options.radius, options.details);
-    const material = new THREE.MeshLambertMaterial({ color: options.color, flatShading: true });
-
-    super({
-      geometry: geometry,
-      material: material,
-      ...options
-    });
+    super(options);
 
     this.aboveMapHeight = drawRandom(-this.radius / 2, this.radius / 2);
+
+    this.geometry = new THREE.DodecahedronGeometry(options.radius, options.details);
+    this.mesh = new THREE.Mesh(this.geometry, this.material);
   }
 
   updatePosition(map, hero, game) {
