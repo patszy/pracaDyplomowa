@@ -48,7 +48,7 @@ const createHero = () =>{
 
 const createRock = () =>{
   rock= new Rock({
-    radius: drawRandom(hero.radius, hero.jumpStrength*3),
+    radius: drawRandom(hero.radius, hero.radius*2),
     color: game.gray,
     rotationCenter: new THREE.Vector3(...map.mesh.position),
     startAngle: drawRandom(270, 360)
@@ -62,7 +62,7 @@ const createGem = () =>{
     color: game.blue,
     rotationSpeed: 0.03,
     rotationCenter: new THREE.Vector3(...map.mesh.position),
-    aboveMapHeight: drawRandom(hero.radius*3, 60),
+    aboveMapHeight: drawRandom(hero.radius*3, hero.radius*6),
     startAngle: drawRandom(270, 360)
   });
   game.scene.add(gem.mesh);

@@ -34,7 +34,7 @@ class Gem extends MapElement {
   spawn(hero) {
     super.spawn();
 
-    this.aboveMapHeight = drawRandom(hero.radius * 3, 60);
+    this.aboveMapHeight = drawRandom(hero.radius * 3, hero.radius * 6);
   }
 }
 

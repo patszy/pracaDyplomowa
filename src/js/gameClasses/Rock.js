@@ -26,7 +26,7 @@ class Rock extends MapElement {
   spawn(hero) {
     super.spawn();
 
-    this.radius = drawRandom(hero.radius, hero.jumpStrength * 3);
+    this.radius = drawRandom(hero.radius, hero.radius * 2);
     this.mesh.geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
     this.aboveMapHeight = drawRandom(-this.radius / 2, this.radius / 2);
   }
