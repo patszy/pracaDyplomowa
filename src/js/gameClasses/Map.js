@@ -9,8 +9,6 @@ class Map extends GameElement{
     super(options);
 
     this.gravity = gravity;
-
-    this.mesh.position.y = -this.radius;  
   }
 
   updatePosition() {

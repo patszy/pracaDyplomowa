@@ -42,8 +42,9 @@ const createHero = () =>{
     jumpStrength: 7,
     bounciness: .7 
   });
+  hero.mesh.position.set(0, map.radius+hero.radius*3, 0);
   hero.setRotationSpeed(map);
-  game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
+  game.initialHeroPosition.copy(hero.mesh.position);
   game.scene.add(hero.mesh);
 }
 

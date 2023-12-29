@@ -32,18 +32,18 @@ class Cloud extends MapElement {
 
   updatePosition(map) {
     this.velocity.x = this.velocity.y += this.speed;
-    this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
-    this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
-    this.mesh.position.z = this.position.z;
+   
+    this.mesh.position.x = Math.sin(this.theta) * Math.cos(this.phi + this.velocity.x) * (map.radius+this.aboveMapHeight);
+    this.mesh.position.y = Math.sin(this.theta) * Math.sin(this.phi + this.velocity.y) * (map.radius+this.aboveMapHeight);
+    this.mesh.position.z = Math.cos(this.theta) * (map.radius+this.aboveMapHeight);
   }
 
   spawn() {
     this.radius = drawRandom(10, 20);
-    this.speed = drawRandom(1, 10)*0.0001;
-    this.position.z = drawRandom(-300, 300);
-    
-    if(this.position.z < -150 || this.position.z > 150) this.aboveMapHeight = drawRandom(0,70);
-    else this.aboveMapHeight = drawRandom(70, 150);
+    this.speed = drawRandom(1, 10)*0.001;
+    this.phi = Math.random() * Math.PI * 2;
+    this.theta = Math.acos(2 * Math.random() - 1);
+    this.aboveMapHeight = drawRandom(100, 150);
 
     this.scale = new THREE.Vector3(drawRandom(1, 2), drawRandom(5, 7)*0.1, drawRandom(1, 2));
     
@@ -51,7 +51,7 @@ class Cloud extends MapElement {
       this.mesh.children[i].geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
     }
 
-    this.mesh.scale.set(...this.scale);
+    // this.mesh.scale.set(...this.scale);
   }
 }
 
