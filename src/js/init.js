@@ -5,11 +5,12 @@ import Hero from './gameClasses/Hero';
 import Rock from './gameClasses/Rock';
 import Gem from './gameClasses/Gem';
 import Cloud from './gameClasses/Cloud';
+import Tree from './gameClasses/Tree';
 import { drawRandom } from './functions';
 
 //INIT GAME, HERO, MAP, ROCK, GEM
 
-let game, map, hero, rock, gem, cloudHolder=[];
+let game, map, hero, rock, gem, cloudHolder=[], treeHolder=[];
 
 const createGame = () => {
   game = new Game({
@@ -79,6 +80,15 @@ const createCloud = () =>{
   }
 }
 
+const createTree = () =>{
+  for(let i=0; i<200; i++){
+    treeHolder[i] = new Tree({
+      color: game.brown
+    });
+    game.scene.add(treeHolder[i].mesh);
+  }
+}
+
 //ANIMATION LOOP
 
 const animate = () => {
@@ -88,6 +98,9 @@ const animate = () => {
   gem.updatePosition(map, hero, game);
   for(let i=0; i<cloudHolder.length; i++){
     cloudHolder[i].updatePosition(map);
+  }
+  for(let i=0; i<treeHolder.length; i++){
+    treeHolder[i].updatePosition(map);
   }
   game.renderer.render(game.scene, game.camera);
   
@@ -101,6 +114,7 @@ const init = () => {
   createRock();
   createGem();
   createCloud();
+  createTree();
 
   animate();
 }

@@ -19,7 +19,7 @@ class GameObject {
     this.position = position;
     
     this.geometry = geometry || new THREE.IcosahedronGeometry(this.radius, this.details);
-    this.material = material || new THREE.MeshLambertMaterial({color: this.color, flatShading: true});;
+    this.material = material || new THREE.MeshLambertMaterial({color: this.color, flatShading: true});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(...this.position);
   }

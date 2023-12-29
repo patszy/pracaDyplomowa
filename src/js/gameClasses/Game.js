@@ -8,6 +8,7 @@ class Game {
     red = `#a4161a`,
     green = `#40916c`,
     blue = `#219ebc`,
+    brown = `#99582a`,
     gray = `#6c757d`,
 
 //GAME VARIABLES
@@ -63,6 +64,7 @@ class Game {
     this.red = red,
     this.green = green,
     this.blue = blue,
+    this.brown = brown,
     this.gray = gray,
     
 
