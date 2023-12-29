@@ -36,11 +36,14 @@ class Cloud extends MapElement {
     this.mesh.position.x = Math.sin(this.theta) * Math.cos(this.phi + this.velocity.x) * (map.radius+this.aboveMapHeight);
     this.mesh.position.y = Math.sin(this.theta) * Math.sin(this.phi + this.velocity.y) * (map.radius+this.aboveMapHeight);
     this.mesh.position.z = Math.cos(this.theta) * (map.radius+this.aboveMapHeight);
+    this.vec = this.mesh.position.clone();
+    this.axis = new THREE.Vector3(0,1,0);
+    this.mesh.quaternion.setFromUnitVectors(this.axis, this.vec.clone().normalize());
   }
 
   spawn() {
     this.radius = drawRandom(10, 20);
-    this.speed = drawRandom(1, 10)*0.001;
+    this.speed = drawRandom(1, 10)*0.0001;
     this.phi = Math.random() * Math.PI * 2;
     this.theta = Math.acos(2 * Math.random() - 1);
     this.aboveMapHeight = drawRandom(100, 150);
@@ -51,7 +54,7 @@ class Cloud extends MapElement {
       this.mesh.children[i].geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
     }
 
-    // this.mesh.scale.set(...this.scale);
+    this.mesh.scale.set(...this.scale);
   }
 }
 
