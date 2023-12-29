@@ -33,9 +33,9 @@ class Cloud extends MapElement {
   updatePosition(map) {
     this.velocity.x = this.velocity.y += this.speed;
    
-    this.mesh.position.x = Math.sin(this.theta) * Math.cos(this.phi + this.velocity.x) * (map.radius+this.aboveMapHeight);
+    this.mesh.position.x = Math.sin(this.theta) * Math.cos(this.phi + this.velocity.x) * map.radius;
     this.mesh.position.y = Math.sin(this.theta) * Math.sin(this.phi + this.velocity.y) * (map.radius+this.aboveMapHeight);
-    this.mesh.position.z = Math.cos(this.theta) * (map.radius+this.aboveMapHeight);
+    this.mesh.position.z = Math.cos(this.theta) * map.radius;
     this.vec = this.mesh.position.clone();
     this.axis = new THREE.Vector3(0,1,0);
     this.mesh.quaternion.setFromUnitVectors(this.axis, this.vec.clone().normalize());
@@ -53,6 +53,7 @@ class Cloud extends MapElement {
     for(let i=0; i<this.mesh.children.length; i++){
       this.mesh.children[i].geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
     }
+    console.log(this.mesh);
 
     this.mesh.scale.set(...this.scale);
   }

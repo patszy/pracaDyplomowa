@@ -71,11 +71,9 @@ const createGem = () =>{
 }
 
 const createCloud = () =>{
-  for(let i=0; i<150; i++){
+  for(let i=0; i<100; i++){
     cloudHolder[i] = new Cloud({
-      color: game.blue,
-      rotationCenter: new THREE.Vector3(...map.mesh.position),
-      startAngle: drawRandom(0, 360),
+      color: game.blue
     });
     game.scene.add(cloudHolder[i].mesh);
   }
