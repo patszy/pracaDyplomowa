@@ -32,8 +32,8 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(0, 100, 150),
-    cameraLookAt = new THREE.Vector3(0, 50, 0),
+    cameraPositon = new THREE.Vector3(0, 5, 15),
+    cameraLookAt = new THREE.Vector3(0, 0, 0),
     lights = {
       ambientLight: {color: `#212529`, strength: 0.5},
       hemisphereLight: {skyColor: `#f8f9fa`, groundColor: `#212529`, strength: 0.5},
@@ -77,6 +77,7 @@ class Game {
     this.cameraLookAt = cameraLookAt;
     this.lights = lights;
     this.fog = fog;
+    this.clock = new THREE.Clock();
   
 //GAME VARIABLES
     this.playStatus = playStatus;

@@ -27,24 +27,24 @@ const createGame = () => {
 
 const createMap = () =>{
   map = new Map({
-    size: 700,
-    details: 10,
+    radius: 10,
     rotationSpeed: game.initialMapSpeed,
     color: game.green,
-    gravity: 0.5
+    gravity: 0.1
   });
   game.scene.add(map.mesh);
 }
 
 const createHero = () =>{
   hero = new Hero({
-    radius: 10,
+    radius: .5,
     details: 2,
     color: game.red,
     speed: 0.02,
-    jumpStrength: 7,
+    jumpStrength: .8,
     bounciness: .7 
   });
+  hero.setPosition(new THREE.Vector3(0,3,map.radius));
   game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
   game.scene.add(hero.mesh);
 }
@@ -74,9 +74,18 @@ const createGem = () =>{
 //ANIMATION LOOP
 
 const animate = () => {
+  map.updatePosition();
   hero.updatePosition(map, game);
-  rock.updatePosition(map, hero, game);
-  gem.updatePosition(map, hero, game);
+  // rock.updatePosition(map, hero, game);
+  // gem.updatePosition(map, hero, game);
+
+  const deltaTime = game.clock.getDelta();
+
+  if (game.clock.elapsedTime >= .17) {
+      map.generateMap();
+      game.clock.elapsedTime = 0;
+  }
+
   game.renderer.render(game.scene, game.camera);
   
   requestAnimationFrame(animate);
@@ -86,8 +95,8 @@ const init = () => {
   createGame();
   createMap();
   createHero();
-  createRock();
-  createGem();
+  // createRock();
+  // createGem();
 
   animate();
 }
