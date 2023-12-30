@@ -22,15 +22,14 @@ class MapElement extends GameObject {
   }
 
   updatePosition(map) {
-    this.velocity.x = this.velocity.y += map.speed;
+    this.velocity.z = map.speed;
 
-    this.mesh.position.x = Math.cos(degreeToRadians(this.startAngle) + this.velocity.x) * (map.radius + this.aboveMapHeight) + this.rotationCenter.x;
-    this.mesh.position.y = Math.sin(degreeToRadians(this.startAngle) + this.velocity.y) * (map.radius + this.aboveMapHeight) + this.rotationCenter.y;
+    this.mesh.position.y = this.aboveMapHeight;
+    this.mesh.position.z += this.velocity.z;
   }
 
-  spawn() {
-    this.startAngle = drawRandom(270, 360);
-    this.velocity.x = this.velocity.y = 0;
+  spawn(map) {
+    this.mesh.position.z = map.front;
   }
 }
 

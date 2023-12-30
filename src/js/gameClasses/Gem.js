@@ -20,19 +20,18 @@ class Gem extends MapElement {
   updatePosition(map, hero, game) {
     super.updatePosition(map);
 
-    this.mesh.rotation.y -= this.rotationSpeed;
+    if(this.mesh.position.z > map.back) this.spawn(map, hero);
 
-    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.spawn(hero);
     if(checkSphereCollision(this, hero)) {
-      this.spawn(hero);
+      this.spawn(map, hero);
       this.updatePosition(map, hero);
       game.updateScore(map);
       hero.setRotationSpeed(map);
     }
   }
 
-  spawn(hero) {
-    super.spawn();
+  spawn(map, hero) {
+    super.spawn(map);
 
     this.aboveMapHeight = drawRandom(hero.radius * 3, hero.radius * 6);
   }

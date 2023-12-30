@@ -12,10 +12,14 @@ let game, map, hero, rock, gem;
 
 const createGame = () => {
   game = new Game({
-    initialMapSpeed: 0.01,
-    levelUpMapSpeed: 0.001,
+    initialMapSpeed: 2,
+    levelUpMapSpeed: .5,
     // levelUpSpeed: 2,
     health: 100,
+    fog: {
+      near: 150,
+      far: 500
+    }
   });
   game.createScene();
   game.createLights();
@@ -23,10 +27,10 @@ const createGame = () => {
 
 const createMap = () =>{
   map = new Map({
-    radius: 300,
-    details: 5,
-    color: game.green,
+    size: 700,
+    details: 10,
     rotationSpeed: game.initialMapSpeed,
+    color: game.green,
     gravity: 0.5
   });
   game.scene.add(map.mesh);
@@ -35,13 +39,12 @@ const createMap = () =>{
 const createHero = () =>{
   hero = new Hero({
     radius: 10,
-    details: 2 ,
+    details: 2,
     color: game.red,
     speed: 0.02,
     jumpStrength: 7,
     bounciness: .7 
   });
-  hero.setRotationSpeed(map);
   game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
   game.scene.add(hero.mesh);
 }
@@ -71,7 +74,6 @@ const createGem = () =>{
 //ANIMATION LOOP
 
 const animate = () => {
-  map.updatePosition();
   hero.updatePosition(map, game);
   rock.updatePosition(map, hero, game);
   gem.updatePosition(map, hero, game);

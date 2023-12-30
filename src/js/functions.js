@@ -1,3 +1,11 @@
+const checkBoxCollision = (obj1, obj2) => {
+  const x = obj1.right >= obj2.left && obj1.left <= obj2.right;
+  const y = obj1.bottom + obj1.velocity.y <= obj2.top && obj1.top >= obj2.bottom;
+  const z = obj1.front <= obj2.back && obj1.back >= obj2.front;
+
+  return x && y && z;
+}
+
 const checkSphereCollision = (obj1, obj2) => {
   const center1 = obj1.mesh.position.clone().add(obj1.velocity);
   const center2 = obj2.mesh.position.clone().add(obj2.velocity);
@@ -19,4 +27,4 @@ const circleCircumference = (radius) => {
   return 2*Math.PI*radius;
 }
 
-export { checkSphereCollision, drawRandom, degreeToRadians, circleCircumference };
+export { checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, circleCircumference };

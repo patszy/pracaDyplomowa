@@ -14,8 +14,9 @@ class Rock extends MapElement {
 
   updatePosition(map, hero, game) {
     super.updatePosition(map);
+  
+    if(this.mesh.position.z > map.back) this.spawn(map, hero);
 
-    if(degreeToRadians(this.startAngle) + this.velocity.x > degreeToRadians(540)) this.spawn(hero);
     if(checkSphereCollision(this, hero)) {
       hero.velocity.y = hero.jumpStrength/2;
       game.updateHealth(this);
@@ -23,8 +24,8 @@ class Rock extends MapElement {
     game.checkNoHealth(hero);
   }
 
-  spawn(hero) {
-    super.spawn();
+  spawn(map, hero) {
+    super.spawn(map);
 
     this.radius = drawRandom(hero.radius, hero.radius * 2);
     this.mesh.geometry = new THREE.DodecahedronGeometry(this.radius, this.details);
