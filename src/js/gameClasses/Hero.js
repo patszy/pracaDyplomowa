@@ -52,9 +52,9 @@ class Hero extends GameElement{
   }
 
   updatePosition(map, game) {
-    if(game.keys.go) {
-      if(game.playStatus) map.speed = map.rotationSpeed*2;
-    } else map.speed = map.rotationSpeed;
+    // if(game.keys.go) {
+    //   if(game.playStatus) map.speed = map.rotationSpeed*2;
+    // } else map.speed = map.speed;
     
     this.setRotationSpeed(map);
 
@@ -66,6 +66,13 @@ class Hero extends GameElement{
       };
     }
 
+    if(checkMapCollision(this, map).x && checkMapCollision(this, map).y) {
+      game.stopGame(this);
+      // this.velocity.y = this.jumpStrength/2;
+      // game.updateHealth(this);
+    }
+    // game.checkNoHealth(this);
+
     this.applyGravity(map);
   }
 
@@ -75,7 +82,7 @@ class Hero extends GameElement{
 
     this.velocity.y -= map.gravity;
 
-    if(checkMapCollision(this, map)) {
+    if(checkMapCollision(this, map).y) {
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;

@@ -6,7 +6,7 @@ import { drawRandom } from '../functions';
 class Map extends GameElement{
   constructor({
     gravity = 1,
-    size = 1,
+    size = 2,
     maxHeight = 5,
     speed = 1,
     ...options
@@ -44,8 +44,9 @@ class Map extends GameElement{
       const z = this.radius * Math.sin(angle);
 
       const squareClone = this.meshBox.clone();
+      squareClone.angle = angle;
       squareClone.position.set(x,0,z);
-      squareClone.lookAt(0,0,0);
+      // squareClone.lookAt(0,0,0);
       this.mesh.add(squareClone);
     }
   }
@@ -78,9 +79,16 @@ class Map extends GameElement{
   }
 
   updatePosition() {
-    let rotationMod = Math.floor((Math.abs(this.mesh.rotation.y)%this.angleStep)*(100/this.speed));
+    let rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.speed));
+
     if(rotationMod == 0) this.generateMap();
-    this.mesh.rotation.y -= this.speed/100;
+    
+    for(let i=0; i<this.mesh.children.length; i++){
+      this.mesh.children[i].position.x = this.radius*Math.cos(this.mesh.children[i].angle);
+      this.mesh.children[i].position.z = this.radius*Math.sin(this.mesh.children[i].angle);
+      
+      this.mesh.children[i].angle += this.speed/100;
+    }
   }
 }
 

@@ -179,8 +179,8 @@ class Game {
   }
 
   stopGame(hero) {
-    hero.mesh.position.x += 5;
-    hero.mesh.position.z += 2;
+    hero.mesh.position.x -= .1;
+    hero.mesh.position.z += .1;
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }

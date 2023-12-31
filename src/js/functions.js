@@ -10,15 +10,21 @@ const checkBoxCollision = (obj1, obj2) => {
 }
 
 const checkMapCollision = (hero, map) => {
-  // const x = map.right >= map.left && map.left <= map.right;
+  
+  let x = false;
   let y = false;
+  let z = false;
   for(let i=0; i<map.mesh.children.length; i++){
-    y = hero.bottom + hero.velocity.y <= map.mesh.children[i].top && hero.top >= map.mesh.children[i].bottom;
-    if(y == true) return y;
+    x = hero.right >= map.mesh.children[i].left && hero.left <= map.mesh.children[i].right;
+    z = hero.front >= map.mesh.children[i].back && hero.back <= map.mesh.children[i].front;
+
+    if(x && z) {
+      y = hero.bottom + hero.velocity.y <= map.mesh.children[i].top && hero.top >= map.mesh.children[i].bottom;
+      if(y) return {x, y, z};
+    }
   }
-  // const z = map.front <= map.back && map.back >= map.front;
-  // console.log(y);
-  return y;
+
+  return {x, y, z};
 }
 
 const checkSphereCollision = (obj1, obj2) => {
