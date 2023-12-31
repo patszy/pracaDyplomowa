@@ -75,16 +75,9 @@ const createGem = () =>{
 
 const animate = () => {
   map.updatePosition();
-  hero.updatePosition(map, game);
+  // hero.updatePosition(map, game);
   // rock.updatePosition(map, hero, game);
   // gem.updatePosition(map, hero, game);
-
-  const deltaTime = game.clock.getDelta();
-
-  if (game.clock.elapsedTime >= .17) {
-      map.generateMap();
-      game.clock.elapsedTime = 0;
-  }
 
   game.renderer.render(game.scene, game.camera);
   
@@ -94,7 +87,7 @@ const animate = () => {
 const init = () => {
   createGame();
   createMap();
-  createHero();
+  // createHero();
   // createRock();
   // createGem();
 

@@ -6,11 +6,17 @@ import { drawRandom } from '../functions';
 class Map extends GameElement{
   constructor({
     gravity = 1,
+    size = 1,
+    maxHeight = 5,
+    speed = 1,
     ...options
   }) {
     super(options);
 
     this.gravity = gravity;
+    this.size = size;
+    this.maxHeight = maxHeight+1;
+    this.speed = speed;
     this.earlierHeight = 1; 
 
 //Sides
@@ -24,10 +30,10 @@ class Map extends GameElement{
 //THREE
     this.mesh = new THREE.Object3D();
 
-    this.geometryBox = new THREE.BoxGeometry(1, 1, 1);
+    this.geometryBox = new THREE.BoxGeometry(this.size, this.size, this.size);
     this.materialBox = new THREE.MeshLambertMaterial({ color: options.color });
     this.meshBox = new THREE.Mesh(this.geometryBox, this.materialBox);
-    this.numberOfSquares = Math.floor((2*Math.PI*this.radius));
+    this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size);
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
     this.currentBox = this.numberOfSquares-1;
     
@@ -58,20 +64,29 @@ class Map extends GameElement{
   }
 
   generateMap() {
-    // let changeHeight = {min:0, max:1};
-    // (this.earlierHeight<=1) ? changeHeight.min = 0 : changeHeight.min = 1;
-    // (this.earlierHeight>=3) ? changeHeight.max = -2 : changeHeight.max = 2;
-    // this.earlierHeight = drawRandom(this.earlierHeight-changeHeight.min, this.earlierHeight+changeHeight.max);
-    
-    // if(this.currentBox<=0) this.currentBox = this.numberOfSquares-1;
-    // this.currentBox--;
+    let changeHeight = {min: this.size, max:this.earlierHeight+this.size}
+    if(changeHeight.max>this.size*this.maxHeight) {
+      console.log("ChangeMax"+changeHeight.max+"SizeMax"+this.size*this.maxHeight);
+      changeHeight = {min:this.size, max:this.size*this.maxHeight};
+      console.log(changeHeight);
+    }
 
-    // this.mesh.children[this.currentBox].geometry = new THREE.BoxGeometry(1, this.earlierHeight, 1);
-    // this.mesh.children[this.currentBox].position.y = (this.earlierHeight)/2-.5;
+    do{
+      this.earlierHeight = drawRandom(changeHeight.min, changeHeight.max);
+    } while(this.earlierHeight%this.size != 0)
+    
+    
+    if(this.currentBox<=0) this.currentBox = this.numberOfSquares;
+    this.currentBox--;
+
+    this.mesh.children[this.currentBox].geometry = new THREE.BoxGeometry(this.size, this.earlierHeight, this.size);
+    this.mesh.children[this.currentBox].position.y = (this.earlierHeight)/2-(this.size/2);
   }
 
   updatePosition() {
-    this.mesh.rotation.y -= 0.01;
+    let rotationMod = Math.floor((Math.abs(this.mesh.rotation.y)%this.angleStep)*(100/this.speed));
+    if(rotationMod == 0) this.generateMap();
+    this.mesh.rotation.y -= this.speed/100;
   }
 }
 
