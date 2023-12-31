@@ -65,16 +65,10 @@ class Map extends GameElement{
 
   generateMap() {
     let changeHeight = {min: this.size, max:this.earlierHeight+this.size}
-    if(changeHeight.max>this.size*this.maxHeight) {
-      console.log("ChangeMax"+changeHeight.max+"SizeMax"+this.size*this.maxHeight);
-      changeHeight = {min:this.size, max:this.size*this.maxHeight};
-      console.log(changeHeight);
-    }
+    if(changeHeight.max>this.size*this.maxHeight) changeHeight = {min:this.size, max:this.size*this.maxHeight};
 
-    do{
-      this.earlierHeight = drawRandom(changeHeight.min, changeHeight.max);
-    } while(this.earlierHeight%this.size != 0)
-    
+    do this.earlierHeight = drawRandom(changeHeight.min, changeHeight.max);
+    while(this.earlierHeight%this.size != 0)
     
     if(this.currentBox<=0) this.currentBox = this.numberOfSquares;
     this.currentBox--;
