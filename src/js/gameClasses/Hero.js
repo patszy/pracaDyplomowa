@@ -51,12 +51,11 @@ class Hero extends GameElement{
     this.mesh.rotation.z -= .1;
   }
 
-  updatePosition(map, game) {
-    // if(game.keys.go) {
-    //   if(game.playStatus) map.speed = map.rotationSpeed*2;
-    // } else map.speed = map.speed;
-    
+  updatePosition(map, game) {    
     this.setRotationSpeed(map);
+
+    this.mesh.position.x += this.velocity.x;
+    this.mesh.position.z += this.velocity.z;
 
     if(game.keys.jump) {
       if(!game.playStatus) game.startGame(map, this);

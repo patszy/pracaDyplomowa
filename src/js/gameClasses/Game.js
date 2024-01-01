@@ -16,6 +16,7 @@ class Game {
     initialHeroPosition = new THREE.Vector3(0, 0, 0),
     levelUpMapSpeed = 0,
     levelUpSpeed = 1,
+    mapMaxHeight = 5,
     initStats = {
       health: 100,
       level: 1,
@@ -86,6 +87,7 @@ class Game {
     this.levelUpSpeed = levelUpSpeed;
     this.initStats = initStats;
     this.stats = {...initStats};
+    this.mapMaxHeight = mapMaxHeight;
     this.levelValue = document.getElementById(`levelValue`);
     this.scoreValue = document.getElementById(`scoreValue`);
     this.scoreBar = document.getElementById(`hpBar`);
@@ -146,9 +148,6 @@ class Game {
 
   handleKeyDown(event) {
     switch (event.code) {
-      case 'KeyW':
-        this.keys.go = true;
-        break;
       case 'Space':
         this.keys.jump = true;
         break;
@@ -157,9 +156,6 @@ class Game {
 
   handleKeyUp(event) {
     switch (event.code) {
-      case 'KeyW':
-        this.keys.go = false;
-        break;
       case 'Space':
         this.keys.jump = false;
         break;
@@ -167,8 +163,10 @@ class Game {
   }
 
   startGame(map, hero) {
-    hero.mesh.position.set(...this.initialHeroPosition);
+    map.reset();
     map.rotationSpeed = this.initialMapSpeed;
+    hero.velocity = new THREE.Vector3(0,0,0);
+    hero.mesh.position.set(...this.initialHeroPosition);    
 
     this.stats = {...this.initStats};
     this.messageRestart.style.display = `none`;
@@ -179,8 +177,7 @@ class Game {
   }
 
   stopGame(hero) {
-    hero.mesh.position.x -= .1;
-    hero.mesh.position.z += .1;
+    hero.velocity = new THREE.Vector3(-.2,0,.1);
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }

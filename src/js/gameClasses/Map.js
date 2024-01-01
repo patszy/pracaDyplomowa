@@ -17,7 +17,7 @@ class Map extends GameElement{
     this.size = size;
     this.maxHeight = maxHeight+1;
     this.speed = speed;
-    this.earlierHeight = 1; 
+    this.earlierHeight = this.size; 
 
 //Sides
     this.right = this.mesh.position.x + this.size / 2;
@@ -64,7 +64,7 @@ class Map extends GameElement{
     }
   }
 
-  generateMap() {
+  generate() {
     let changeHeight = {min: this.size, max:this.earlierHeight+this.size}
     if(changeHeight.max>this.size*this.maxHeight) changeHeight = {min:this.size, max:this.size*this.maxHeight};
 
@@ -78,10 +78,18 @@ class Map extends GameElement{
     this.mesh.children[this.currentBox].position.y = (this.earlierHeight)/2-(this.size/2);
   }
 
+  reset() {
+    this.earlierHeight = this.size;
+    this.mesh.children.forEach(box => {
+      box.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
+      box.position.y = 0;
+    });
+  }
+
   updatePosition() {
     let rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.speed));
 
-    if(rotationMod == 0) this.generateMap();
+    if(rotationMod == 0) this.generate();
     
     for(let i=0; i<this.mesh.children.length; i++){
       this.mesh.children[i].position.x = this.radius*Math.cos(this.mesh.children[i].angle);
