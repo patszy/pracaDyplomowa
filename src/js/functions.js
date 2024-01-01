@@ -10,13 +10,11 @@ const checkBoxCollision = (obj1, obj2) => {
 }
 
 const checkMapCollision = (hero, map) => {
-  
-  let x = false;
-  let y = false;
-  let z = false;
+  let x, y, z = false;
+
   for(let i=0; i<map.mesh.children.length; i++){
     x = hero.right >= map.mesh.children[i].left && hero.left <= map.mesh.children[i].right;
-    z = hero.front >= map.mesh.children[i].back && hero.back <= map.mesh.children[i].front;
+    z = hero.back >= map.mesh.children[i].front && hero.front <= map.mesh.children[i].back;
 
     if(x && z) {
       y = hero.bottom + hero.velocity.y <= map.mesh.children[i].top && hero.top >= map.mesh.children[i].bottom;
@@ -44,8 +42,12 @@ const degreeToRadians = (degree) => {
   return (Math.PI / 180) * degree;
 }
 
+const radiansToDegrees = (radians) => {
+  return (180 / Math.PI) * radians;
+}
+
 const circleCircumference = (radius) => {
   return 2*Math.PI*radius;
 }
 
-export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, circleCircumference };
+export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, radiansToDegrees, circleCircumference };

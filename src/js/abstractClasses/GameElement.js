@@ -3,7 +3,6 @@ import GameObject from './GameObject';
 class GameElement extends GameObject {
   constructor({
     rotationSpeed = 0,
-    speed = 0,
     ...options
   }) {
     if(new.target === GameElement) throw new Error("Cannot instantiate abstract class GameElement");
@@ -11,7 +10,6 @@ class GameElement extends GameObject {
     super(options);
     
     this.rotationSpeed = rotationSpeed;
-    this.speed = speed;
 
     this.mesh.receiveShadow = true;
   }

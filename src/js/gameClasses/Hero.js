@@ -48,7 +48,7 @@ class Hero extends GameElement{
   }
 
   setRotationSpeed(map){
-    this.mesh.rotation.z -= .1;
+    this.mesh.rotation.z += map.rotationSpeed*((2*Math.PI*map.size)/(2*Math.PI*this.radius));
   }
 
   updatePosition(map, game) {    
@@ -65,8 +65,8 @@ class Hero extends GameElement{
       };
     }
 
-    if(checkMapCollision(this, map).x && checkMapCollision(this, map).y) {
-      game.stopGame(this);
+    if(checkMapCollision(this, map).z && checkMapCollision(this, map).y) {
+      game.stopGame(map, this);
       // this.velocity.y = this.jumpStrength/2;
       // game.updateHealth(this);
     }
@@ -85,9 +85,7 @@ class Hero extends GameElement{
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;
-    } else {
-      this.mesh.position.y += this.velocity.y;
-    }
+    } else this.mesh.position.y += this.velocity.y;
   }
 }
 

@@ -33,8 +33,8 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(0, 10, 30),
-    cameraLookAt = new THREE.Vector3(0, 0, 0),
+    cameraPositon = new THREE.Vector3(0, 50, 150),
+    cameraLookAt = new THREE.Vector3(0, 20, 0),
     lights = {
       ambientLight: {color: `#212529`, strength: 0.5},
       hemisphereLight: {skyColor: `#f8f9fa`, groundColor: `#212529`, strength: 0.5},
@@ -176,8 +176,8 @@ class Game {
     this.playStatus = true;
   }
 
-  stopGame(hero) {
-    hero.velocity = new THREE.Vector3(-.2,0,.1);
+  stopGame(map, hero) {
+    hero.velocity = new THREE.Vector3(-.2-map.rotationSpeed,0,.1);
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }
