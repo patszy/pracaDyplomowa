@@ -51,7 +51,9 @@ class Hero extends GameElement{
     this.mesh.rotation.z += map.rotationSpeed*((2*Math.PI*map.size)/(2*Math.PI*this.radius));
   }
 
-  updatePosition(map, game) {    
+  updatePosition(map, game) {  
+    const {x,y,z} = checkMapCollision(this, map);
+    
     this.setRotationSpeed(map);
 
     this.mesh.position.x += this.velocity.x;
@@ -65,7 +67,7 @@ class Hero extends GameElement{
       };
     }
 
-    if(checkMapCollision(this, map).z && checkMapCollision(this, map).y) {
+    if((x || z) && y) {
       game.stopGame(map, this);
       // this.velocity.y = this.jumpStrength/2;
       // game.updateHealth(this);

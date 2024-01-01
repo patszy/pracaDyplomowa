@@ -13,7 +13,7 @@ let game, map, hero, rock, gem;
 const createGame = () => {
   game = new Game({
     initialMapSpeed: 1,
-    levelUpMapSpeed: .5, //Speed up map per lvl
+    levelUpMapSpeed: .2, //Speed up map per lvl
     // levelUpSpeed: 2, //Collect number of gems to lvl up
     health: 100,
     fog: {
@@ -61,13 +61,14 @@ const createRock = () =>{
 
 const createGem = () =>{
   gem = new Gem({
-    radius: 5,
+    radius: hero.radius/2,
     color: game.blue,
     rotationSpeed: 0.03,
     rotationCenter: new THREE.Vector3(...map.mesh.position),
     aboveMapHeight: drawRandom(hero.radius*3, hero.radius*6),
     startAngle: drawRandom(270, 360)
   });
+  gem.mesh.position.set(map.radius,map.size+hero.radius*2,0);
   game.scene.add(gem.mesh);
 }
 
@@ -77,7 +78,7 @@ const animate = () => {
   map.updatePosition(game);
   hero.updatePosition(map, game);
   // rock.updatePosition(map, hero, game);
-  // gem.updatePosition(map, hero, game);
+  gem.updatePosition(map, hero, game);
 
   game.renderer.render(game.scene, game.camera);
   
@@ -89,7 +90,7 @@ const init = () => {
   createMap();
   createHero();
   // createRock();
-  // createGem();
+  createGem();
 
   animate();
 }

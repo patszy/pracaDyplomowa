@@ -28,6 +28,7 @@ class Map extends GameElement{
 //THREE
     this.mesh = new THREE.Object3D();
     this.material = new THREE.MeshLambertMaterial({ color: options.color });
+    this.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
     this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size)
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
     this.currentBox = this.numberOfSquares-1;
@@ -36,8 +37,8 @@ class Map extends GameElement{
   }
 
   createHills() {
-    const geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
-    const meshBox = new THREE.Mesh(geometry, this.material);
+    const meshBox = new THREE.Mesh(this.geometry, this.material);
+    meshBox.receiveShadow = true;
     let angle, x, z, squareClone;
     
     for(let i=0; i<this.numberOfSquares; i++) {
@@ -102,7 +103,7 @@ class Map extends GameElement{
   reset() {
     this.earlierHeight = this.size;
     this.mesh.children.forEach(box => {
-      box.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
+      box.geometry = this.geometry;
       box.position.y = 0;
     });
   }

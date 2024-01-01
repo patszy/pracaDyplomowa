@@ -4,18 +4,16 @@ import { drawRandom, degreeToRadians } from '../functions';
 
 class MapElement extends GameObject {
   constructor({
-    startAngle = 0,
+    angle = 0,
     aboveMapHeight = 0,
-    rotationCenter = new THREE.Vector3(0, 0, 0),
     ...options
   }) {
     if(new.target === MapElement) throw new Error("Cannot instantiate abstract class MapElement");
 
     super(options);
     
-    this.startAngle = startAngle;
+    this.angle = angle;
     this.aboveMapHeight = aboveMapHeight;
-    this.rotationCenter = rotationCenter;
     
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
@@ -28,8 +26,8 @@ class MapElement extends GameObject {
     this.mesh.position.z += this.velocity.z;
   }
 
-  spawn(map) {
-    this.mesh.position.z = map.front;
+  spawn() {
+    this.angle = 0;
   }
 }
 
