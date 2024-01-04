@@ -20,14 +20,11 @@ class MapElement extends GameObject {
   }
 
   updatePosition(map) {
-    this.velocity.z = map.speed;
+    this.angle += map.rotationSpeed/100;
 
+    this.mesh.position.x = map.radius * Math.cos(this.angle);
+    this.mesh.position.z = map.radius * Math.sin(this.angle);
     this.mesh.position.y = this.aboveMapHeight;
-    this.mesh.position.z += this.velocity.z;
-  }
-
-  spawn() {
-    this.angle = 0;
   }
 }
 

@@ -31,7 +31,7 @@ class Map extends GameElement{
     this.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
     this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size)
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
-    this.currentBox = this.numberOfSquares-1;
+    this.boxNumber = this.numberOfSquares-1;
 
     this.createHills();
   }
@@ -67,29 +67,13 @@ class Map extends GameElement{
     });
   }
 
-  // generate() {
-  //   let changeHeight = {min: this.size, max:this.earlierHeight+this.size}
-  //   if(changeHeight.max>this.size*this.maxHeight) changeHeight = {min:this.size, max:this.size*this.maxHeight};
-
-  //   do this.earlierHeight = drawRandom(changeHeight.min, changeHeight.max);
-  //   while(this.earlierHeight%this.size != 0)
-    
-  //   if(this.currentBox<=0) this.currentBox = this.numberOfSquares;
-  //   this.currentBox--;
-
-  //   this.mesh.children[this.currentBox].geometry = new THREE.BoxGeometry(this.size, this.earlierHeight, this.size);
-  //   this.mesh.children[this.currentBox].position.y = (this.earlierHeight)/2-(this.size/2);
-  // }
-
   generate() {
-    const currentChild = this.mesh.children[this.currentBox];
+    const currentChild = this.mesh.children[this.boxNumber];
     const maxHeight = this.size * this.maxHeight;
     let heightRange = {
         min: this.size,
         max: Math.min(this.earlierHeight + this.size, maxHeight)
     };
-
-    this.currentBox = (this.currentBox <= 0) ? this.numberOfSquares-1 : this.currentBox-1;
 
     if(heightRange.max > maxHeight) heightRange.max = maxHeight;
 
@@ -98,6 +82,8 @@ class Map extends GameElement{
 
     currentChild.geometry = new THREE.BoxGeometry(this.size, this.earlierHeight, this.size);
     currentChild.position.y = this.earlierHeight / 2 - this.size / 2;
+
+    this.boxNumber = (this.boxNumber <= 0) ? this.numberOfSquares-1 : this.boxNumber-1;
   }
 
   reset() {
@@ -109,7 +95,7 @@ class Map extends GameElement{
   }
 
   updatePosition() {
-    let rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
+    const rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
     
     if(!rotationMod) this.generate();
 

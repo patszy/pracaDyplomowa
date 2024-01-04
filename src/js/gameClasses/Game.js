@@ -162,11 +162,13 @@ class Game {
     }
   }
 
-  startGame(map, hero) {
+  startGame(map, hero, gem) {
     map.reset();
     map.rotationSpeed = this.initialMapSpeed;
     hero.velocity = new THREE.Vector3(0,0,0);
     hero.mesh.position.set(...this.initialHeroPosition);    
+    // console.log(gem);
+    gem.spawn(map);
 
     this.stats = {...this.initStats};
     this.messageRestart.style.display = `none`;

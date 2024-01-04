@@ -63,12 +63,8 @@ const createGem = () =>{
   gem = new Gem({
     radius: hero.radius/2,
     color: game.blue,
-    rotationSpeed: 0.03,
-    rotationCenter: new THREE.Vector3(...map.mesh.position),
-    aboveMapHeight: drawRandom(hero.radius*3, hero.radius*6),
-    startAngle: drawRandom(270, 360)
   });
-  gem.mesh.position.set(map.radius,map.size+hero.radius*2,0);
+  gem.spawn(map, hero);
   game.scene.add(gem.mesh);
 }
 
@@ -76,7 +72,7 @@ const createGem = () =>{
 
 const animate = () => {
   map.updatePosition(game);
-  hero.updatePosition(map, game);
+  hero.updatePosition(map, game, gem);
   // rock.updatePosition(map, hero, game);
   gem.updatePosition(map, hero, game);
 

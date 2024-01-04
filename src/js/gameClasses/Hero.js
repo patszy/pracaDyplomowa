@@ -51,7 +51,7 @@ class Hero extends GameElement{
     this.mesh.rotation.z += map.rotationSpeed*((2*Math.PI*map.size)/(2*Math.PI*this.radius));
   }
 
-  updatePosition(map, game) {  
+  updatePosition(map, game, gem) {  
     const {x,y,z} = checkMapCollision(this, map);
     
     this.setRotationSpeed(map);
@@ -60,7 +60,7 @@ class Hero extends GameElement{
     this.mesh.position.z += this.velocity.z;
 
     if(game.keys.jump) {
-      if(!game.playStatus) game.startGame(map, this);
+      if(!game.playStatus) game.startGame(map, this, gem);
       if(!this.jumping) {
         this.velocity.y = this.jumpStrength;
         this.jumping = true;
