@@ -14,7 +14,7 @@ class Map extends GameElement{
 
     this.gravity = gravity;
     this.size = size;
-    this.maxHeight = maxHeight+1;
+    this.maxHeight = maxHeight;
     this.earlierHeight = this.size; 
 
 //Sides
@@ -29,7 +29,7 @@ class Map extends GameElement{
     this.mesh = new THREE.Object3D();
     this.material = new THREE.MeshLambertMaterial({ color: options.color });
     this.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
-    this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size)
+    this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size);
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
     this.boxNumber = this.numberOfSquares-1;
 
@@ -38,6 +38,7 @@ class Map extends GameElement{
 
   createHills() {
     const meshBox = new THREE.Mesh(this.geometry, this.material);
+    meshBox.castShadow = true;
     meshBox.receiveShadow = true;
     let angle, x, z, squareClone;
     
@@ -69,7 +70,7 @@ class Map extends GameElement{
 
   generate() {
     const currentChild = this.mesh.children[this.boxNumber];
-    const maxHeight = this.size * this.maxHeight;
+    const maxHeight = this.size * (this.maxHeight+1);
     let heightRange = {
         min: this.size,
         max: Math.min(this.earlierHeight + this.size, maxHeight)
@@ -87,6 +88,7 @@ class Map extends GameElement{
   }
 
   reset() {
+    this.currentMaxHeight = 1;
     this.earlierHeight = this.size;
     this.mesh.children.forEach(box => {
       box.geometry = this.geometry;

@@ -1,12 +1,11 @@
-import Map from "./gameClasses/Map";
-import Hero from "./gameClasses/Hero";
+import * as THREE from 'three';
 
 const checkBoxCollision = (obj1, obj2) => {
   const x = obj1.right >= obj2.left && obj1.left <= obj2.right;
   const y = obj1.bottom + obj1.velocity.y <= obj2.top && obj1.top >= obj2.bottom;
   const z = obj1.front <= obj2.back && obj1.back >= obj2.front;
 
-  return x && y && z;
+  return {x, y, z};
 }
 
 const checkMapCollision = (hero, map) => {
@@ -26,8 +25,8 @@ const checkMapCollision = (hero, map) => {
 }
 
 const checkSphereCollision = (obj1, obj2) => {
-  const center1 = obj1.mesh.position.clone().add(obj1.velocity);
-  const center2 = obj2.mesh.position.clone().add(obj2.velocity);
+  const center1 = obj1.mesh.position.clone();
+  const center2 = obj2.mesh.position.clone();
 
   if (center2.sub(center1).length() < obj1.radius + obj2.radius) return true;
 
@@ -38,16 +37,14 @@ const drawRandom = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
-const degreeToRadians = (degree) => {
-  return (Math.PI / 180) * degree;
+const degreeToRadians = (degrees) => {
+  // return (Math.PI / 180) * degree;
+  return THREE.MathUtils.degToRad(degrees);
 }
 
 const radiansToDegrees = (radians) => {
-  return (180 / Math.PI) * radians;
+  // return (180 / Math.PI) * radians;
+  return THREE.MathUtils.radToDeg(radians);
 }
 
-const circleCircumference = (radius) => {
-  return 2*Math.PI*radius;
-}
-
-export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, radiansToDegrees, circleCircumference };
+export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, radiansToDegrees };

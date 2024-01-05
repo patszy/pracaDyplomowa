@@ -6,7 +6,8 @@
   --red: #a4161a;
   --green: #40916c;
   --blue: #219ebc;
-  --skyBlue: #87ceeb;
+  --skyBlue: #e3f2fd;
+  --yellow: #ffe169;
   --brown: #99582a;
 }
 
@@ -17,7 +18,6 @@ html, body {
 }
 
 body {
-  background:linear-gradient(var(--skyBlue), var(--white), var(--green));
   font-family: 'Montserrat', sans-serif;
   pointer-events: none;
   color: var(--black);
@@ -105,7 +105,7 @@ footer {
 .message__restart {
   position: absolute;
 	font-size: 1.5em;
-	bottom: 50vh;
+	bottom: 65vh;
 	letter-spacing: .5em;
   display: none;
 }
@@ -118,7 +118,7 @@ footer {
 
 .message__instructions span {
 	display: block;
-	color: var(--white);
+	color: var(--red);
 }
 
 @media screen and (max-width: 600px) {

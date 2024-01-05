@@ -11,7 +11,7 @@ class GameElement extends GameObject {
     
     this.rotationSpeed = rotationSpeed;
 
-    this.mesh.receiveShadow = true;
+    this.mesh.castShadow = true;
   }
 }
 

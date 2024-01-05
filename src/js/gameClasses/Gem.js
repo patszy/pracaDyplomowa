@@ -10,23 +10,29 @@ class Gem extends MapElement {
   }) {
     super(options);
 
-    this.rotationSpeed = rotationSpeed;
     this.angle = 0;
+    this.rotationSpeed = rotationSpeed/50;
 
     this.geometry = new THREE.OctahedronGeometry(options.radius, options.details);
     this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
   }
 
   updatePosition(map, hero, game) {
     super.updatePosition(map);
+
+    this.mesh.rotation.x += this.rotationSpeed;
+    this.mesh.rotation.y += this.rotationSpeed;
 
     if(Math.floor(this.angle%degreeToRadians(360)) >= Math.floor(degreeToRadians(360))) this.spawn(map);
 
     if(checkSphereCollision(this, hero)) {
       this.spawn(map);
       
-      game.updateScore(map);
+      game.updateScore(100);
+      game.updateLevel(map);
       hero.setRotationSpeed(map);
     }
   }

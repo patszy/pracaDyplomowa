@@ -12,24 +12,27 @@ let game, map, hero, rock, gem;
 
 const createGame = () => {
   game = new Game({
-    initialMapSpeed: 1,
-    levelUpMapSpeed: .2, //Speed up map per lvl
-    // levelUpSpeed: 2, //Collect number of gems to lvl up
+    initMapSpeed: 1,
+    initMapMaxHeight: 1,
+    levelUpMapSpeed: .1, //Speed up map per lvl
+    mapMaxHeight: 3,
     health: 100,
-    fog: {
-      near: 150,
-      far: 500
-    }
   });
+  game.fog = {
+    color: game.skyblue,
+    near: 70,
+    far: 150
+  }
   game.createScene();
   game.createLights();
 }
 
 const createMap = () =>{
   map = new Map({
-    radius: 70,
+    radius: 50,
     size: 10,
-    rotationSpeed: game.initialMapSpeed,
+    maxHeight: game.initMapMaxHeight,
+    rotationSpeed: game.initMapSpeed,
     color: game.green,
     gravity: .5
   });
@@ -38,14 +41,14 @@ const createMap = () =>{
 
 const createHero = () =>{
   hero = new Hero({
-    radius: map.size/3,
+    radius: map.size/5,
     details: 2,
     color: game.red,
     jumpStrength: map.size*.5,
-    bounciness: .5 
+    bounciness: .5
   });
-  hero.setPosition(new THREE.Vector3(0,map.size*2,map.radius));
-  game.initialHeroPosition = new THREE.Vector3(...hero.mesh.position);
+  hero.setPosition(new THREE.Vector3(-map.radius, map.size*2, 0));
+  game.initHeroPosition = new THREE.Vector3(...hero.mesh.position);
   game.scene.add(hero.mesh);
 }
 
@@ -61,8 +64,9 @@ const createRock = () =>{
 
 const createGem = () =>{
   gem = new Gem({
-    radius: hero.radius/2,
+    radius: hero.radius/1.5,
     color: game.blue,
+    rotationSpeed: 1
   });
   gem.spawn(map, hero);
   game.scene.add(gem.mesh);

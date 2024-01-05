@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import GameElement from '../abstractClasses/GameElement';
-import { checkMapCollision, checkBoxCollision, circleCircumference } from '../functions';
+import { checkMapCollision, checkBoxCollision } from '../functions';
 
 class Hero extends GameElement{
   constructor({
@@ -28,6 +28,7 @@ class Hero extends GameElement{
     this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
 
     this.updateSides();
   }
@@ -55,9 +56,10 @@ class Hero extends GameElement{
     const {x,y,z} = checkMapCollision(this, map);
     
     this.setRotationSpeed(map);
-
     this.mesh.position.x += this.velocity.x;
     this.mesh.position.z += this.velocity.z;
+
+    if(game.stats.health > 0) game.updateScore(map.mesh.children[0].angle*0.01);
 
     if(game.keys.jump) {
       if(!game.playStatus) game.startGame(map, this, gem);
@@ -67,12 +69,10 @@ class Hero extends GameElement{
       };
     }
 
-    if((x || z) && y) {
-      game.stopGame(map, this);
-      // this.velocity.y = this.jumpStrength/2;
-      // game.updateHealth(this);
+    if(x && z && y) {
+      game.updateHealth();
+      game.checkNoHealth(map, this);
     }
-    // game.checkNoHealth(this);
 
     this.applyGravity(map);
   }

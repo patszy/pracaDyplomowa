@@ -16,7 +16,6 @@ class MapElement extends GameObject {
     this.aboveMapHeight = aboveMapHeight;
     
     this.mesh.castShadow = true;
-    this.mesh.receiveShadow = true;
   }
 
   updatePosition(map) {

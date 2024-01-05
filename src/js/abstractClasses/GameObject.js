@@ -22,6 +22,7 @@ class GameObject {
     this.material = material || new THREE.MeshLambertMaterial({color: this.color, flatShading: true});;
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(...this.position);
+    this.mesh.receiveShadow = true;
   }
 }
 

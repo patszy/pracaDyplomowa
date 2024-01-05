@@ -8,15 +8,18 @@ class Game {
     red = `#a4161a`,
     green = `#40916c`,
     blue = `#219ebc`,
+    skyblue = `#e3f2fd`,
+    yellow = `#ffe169`,
     gray = `#6c757d`,
 
 //GAME VARIABLES
     playStatus = true,
-    initialMapSpeed = 0,
-    initialHeroPosition = new THREE.Vector3(0, 0, 0),
+    initMapSpeed = 0,
+    initHeroPosition = new THREE.Vector3(0, 0, 0),
     levelUpMapSpeed = 0,
-    levelUpSpeed = 1,
-    mapMaxHeight = 5,
+    mapMaxHeight = 3,
+    levelUpMapHeight = 1,
+    initMapMaxHeight = 1,
     initStats = {
       health: 100,
       level: 1,
@@ -33,15 +36,14 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(0, 50, 150),
-    cameraLookAt = new THREE.Vector3(0, 20, 0),
+    cameraPositon = new THREE.Vector3(-100, 40, 0),
+    cameraLookAt = new THREE.Vector3(0, 15, 0),
     lights = {
-      ambientLight: {color: `#212529`, strength: 0.5},
-      hemisphereLight: {skyColor: `#f8f9fa`, groundColor: `#212529`, strength: 0.5},
+      ambientLight: {color: `#f8f9fa`, strength: .3},
       shadowLight: {
-        color: `#f8f9fa`,
+        color: `#ffe169`,
         strength: 1,
-        position: new THREE.Vector3(100, 100, -50),
+        position: new THREE.Vector3(-50, 100, 100),
         left: -300,
         right: 300,
         top: 300,
@@ -53,7 +55,7 @@ class Game {
     },
     fog = {
       color: `#f8f9fa`,
-      near: 200,
+      near: 0,
       far: 500,
     }
   }){
@@ -64,6 +66,8 @@ class Game {
     this.red = red,
     this.green = green,
     this.blue = blue,
+    this.skyblue = skyblue,
+    this.yellow = yellow,
     this.gray = gray,
     
 
@@ -81,16 +85,17 @@ class Game {
   
 //GAME VARIABLES
     this.playStatus = playStatus;
-    this.initialMapSpeed = initialMapSpeed;
-    this.initialHeroPosition = initialHeroPosition;
+    this.initMapSpeed = initMapSpeed;
+    this.initHeroPosition = initHeroPosition;
     this.levelUpMapSpeed = levelUpMapSpeed;
-    this.levelUpSpeed = levelUpSpeed;
+    this.mapMaxHeight = mapMaxHeight;
+    this.levelUpMapHeight = levelUpMapHeight;
+    this.initMapMaxHeight = initMapMaxHeight;
     this.initStats = initStats;
     this.stats = {...initStats};
-    this.mapMaxHeight = mapMaxHeight;
     this.levelValue = document.getElementById(`levelValue`);
     this.scoreValue = document.getElementById(`scoreValue`);
-    this.scoreBar = document.getElementById(`hpBar`);
+    this.hpBar = document.getElementById(`hpBar`);
     this.hpValue = document.getElementById(`hpValue`);
     this.messageRestart = document.getElementById(`restartMessage`);
     this.keys = keys;
@@ -101,6 +106,7 @@ class Game {
     this.camera = new THREE.PerspectiveCamera(this.viewAngle, this.aspectRatio, this.minGenerationField, this.maxGenerationField);
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 
+    this.scene.background = new THREE.Color(this.fog.color);
     this.scene.fog = new THREE.Fog(this.fog.color, this.fog.near, this.fog.far);
     this.camera.position.set(...this.cameraPositon);
     this.camera.lookAt(this.cameraLookAt);
@@ -116,7 +122,6 @@ class Game {
 
   createLights() {
     this.ambientLight = new THREE.AmbientLight(this.lights.ambientLight.color, this.lights.ambientLight.strength);
-    this.hemisphereLight = new THREE.HemisphereLight(this.lights.hemisphereLight.skyColor, this.lights.hemisphereLight.groundColor, this.lights.hemisphereLight.strength);
     this.shadowLight = new THREE.DirectionalLight(this.lights.shadowLight.color, this.lights.shadowLight.strength);
 
     this.shadowLight.position.set(...this.lights.shadowLight.position);
@@ -130,7 +135,7 @@ class Game {
     this.shadowLight.shadow.mapSize.width = this.lights.shadowLight.shadowDetails;
     this.shadowLight.shadow.mapSize.height = this.lights.shadowLight.shadowDetails;
 
-    this.scene.add(this.ambientLight, this.hemisphereLight, this.shadowLight);
+    this.scene.add(this.ambientLight, this.shadowLight);
   }
 
   updateWindowSize() {
@@ -163,45 +168,47 @@ class Game {
   }
 
   startGame(map, hero, gem) {
+    map.maxHeight = this.initMapMaxHeight;
     map.reset();
-    map.rotationSpeed = this.initialMapSpeed;
+    map.rotationSpeed = this.initMapSpeed;
     hero.velocity = new THREE.Vector3(0,0,0);
-    hero.mesh.position.set(...this.initialHeroPosition);    
-    // console.log(gem);
+    hero.mesh.position.set(...this.initHeroPosition);    
     gem.spawn(map);
 
     this.stats = {...this.initStats};
     this.messageRestart.style.display = `none`;
     this.scoreValue.innerText = this.stats.score;
     this.levelValue.innerText = this.stats.level;
-    this.hpValue.innerText = this.scoreBar.style.width = `${this.stats.health}%`;
+    this.hpValue.innerText = this.hpBar.style.width = `${this.stats.health}%`;
     this.playStatus = true;
   }
 
   stopGame(map, hero) {
-    hero.velocity = new THREE.Vector3(-.2-map.rotationSpeed,0,.1);
+    hero.velocity = new THREE.Vector3(-.2, 0, -.3-map.rotationSpeed);
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }
 
-  updateScore(map) {
-    this.stats.score++;
-    this.scoreValue.innerText = this.stats.score;
-    if(this.stats.score % this.levelUpSpeed == 0) {
-      this.stats.level ++;
-      map.rotationSpeed += this.levelUpMapSpeed;
-      this.levelValue.innerText = this.stats.level;
-    }
+  updateScore(value){
+    this.stats.score = this.stats.score + value;
+    this.scoreValue.innerText = Math.floor(this.stats.score);
   }
 
-  updateHealth(rock) {
-    this.stats.health -= Math.round(rock.radius);
-    this.hpValue.innerText = this.scoreBar.style.width = `${this.stats.health}%`;
-    if(this.stats.health < 0 ) this.hpValue.innerText = this.scoreBar.style.width = `0%`;
+  updateLevel(map){
+    this.stats.level++;
+    this.levelValue.innerText = this.stats.level;
+    map.rotationSpeed += this.levelUpMapSpeed;
+    map.maxHeight = (map.maxHeight+this.levelUpMapHeight >= this.mapMaxHeight) ? this.mapMaxHeight : map.maxHeight + this.levelUpMapHeight;
   }
 
-  checkNoHealth(hero) {
-    if(this.stats.health <= 0) this.stopGame(hero);
+  updateHealth() {
+    this.stats.health = 0;
+    this.hpValue.innerText = this.hpBar.style.width = `${this.stats.health}%`;
+    if(this.stats.health < 0 ) this.hpValue.innerText = this.hpBar.style.width = `0%`;
+  }
+
+  checkNoHealth(map, hero) {
+    if(this.stats.health <= 0) this.stopGame(map, hero);
   }
 }
 
