@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Montserrat+Subrayada&display=swap');
 
 :root {
-  --white: #f8f9fa;
-  --black: #212529;
-  --red: #a4161a;
-  --green: #40916c;
-  --blue: #219ebc;
+  --white: #ced4da;
+  --black: #04080f;
+  --red: #941b0c;
+  --green: #004b23;
+  --blue: #0077b6;
   --skyBlue: #e3f2fd;
   --yellow: #ffe169;
   --brown: #99582a;
@@ -20,7 +20,7 @@ html, body {
 body {
   font-family: 'Montserrat', sans-serif;
   pointer-events: none;
-  color: var(--black);
+  color: var(--white);
 }
 
 .game-info {
@@ -80,7 +80,7 @@ main {
 
 #hp .score__value {
   width: 100%;
-  color: var(--black);
+  color: var(--white);
   position: relative;
   z-index: 1;
 }
@@ -105,7 +105,7 @@ footer {
 .message__restart {
   position: absolute;
 	font-size: 1.5em;
-	bottom: 65vh;
+	bottom: 50vh;
 	letter-spacing: .5em;
   display: none;
 }

@@ -14,13 +14,13 @@ const createGame = () => {
   game = new Game({
     initMapSpeed: 1,
     initMapMaxHeight: 1,
-    levelUpMapSpeed: .1, //Speed up map per lvl
+    levelUpMapSpeed: .1,
     mapMaxHeight: 3,
     health: 100,
   });
   game.fog = {
-    color: game.skyblue,
-    near: 70,
+    color: game.black,
+    near: 100,
     far: 150
   }
   game.createScene();

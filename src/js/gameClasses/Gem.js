@@ -14,7 +14,7 @@ class Gem extends MapElement {
     this.rotationSpeed = rotationSpeed/50;
 
     this.geometry = new THREE.OctahedronGeometry(options.radius, options.details);
-    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
+    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .5});
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;

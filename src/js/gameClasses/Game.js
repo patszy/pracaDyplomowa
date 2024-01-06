@@ -4,10 +4,10 @@ class Game {
   constructor({
 //GAME COLORS
     white = `#f8f9fa`,
-    black = `#212529`,
-    red = `#a4161a`,
-    green = `#40916c`,
-    blue = `#219ebc`,
+    black = `#04080f`,
+    red = `#780000`,
+    green = `#004b23`,
+    blue = `#07c8f9`,
     skyblue = `#e3f2fd`,
     yellow = `#ffe169`,
     gray = `#6c757d`,
@@ -36,14 +36,14 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(-100, 40, 0),
+    cameraPositon = new THREE.Vector3(-100, 30, 0),
     cameraLookAt = new THREE.Vector3(0, 15, 0),
     lights = {
       ambientLight: {color: `#f8f9fa`, strength: .3},
       shadowLight: {
-        color: `#ffe169`,
-        strength: 1,
-        position: new THREE.Vector3(-50, 100, 100),
+        color: `#f8f9fa`,
+        strength: 5,
+        position: new THREE.Vector3(-100, 200, 200),
         left: -300,
         right: 300,
         top: 300,
