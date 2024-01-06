@@ -1,6 +1,6 @@
-import * as THREE from 'three';
+import { MeshPhongMaterial, Mesh } from 'three';
 import GameElement from '../abstractClasses/GameElement';
-import { checkMapCollision, checkBoxCollision } from '../functions';
+import { checkMapCollision } from '../functions';
 
 class Hero extends GameElement{
   constructor({
@@ -25,8 +25,8 @@ class Hero extends GameElement{
     this.back = this.mesh.position.z + this.radius;
 
 //THREE
-    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true});
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.material = new MeshPhongMaterial({color: options.color, shininess, flatShading: true});
+    this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
 

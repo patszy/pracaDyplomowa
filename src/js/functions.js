@@ -38,13 +38,7 @@ const drawRandom = (min, max) => {
 }
 
 const degreeToRadians = (degrees) => {
-  // return (Math.PI / 180) * degree;
   return THREE.MathUtils.degToRad(degrees);
 }
 
-const radiansToDegrees = (radians) => {
-  // return (180 / Math.PI) * radians;
-  return THREE.MathUtils.radToDeg(radians);
-}
-
-export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians, radiansToDegrees };
+export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians };

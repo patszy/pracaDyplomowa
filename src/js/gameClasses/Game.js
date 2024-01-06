@@ -36,7 +36,7 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(-100, 30, 0),
+    cameraPositon = new THREE.Vector3(-100, 50, 0),
     cameraLookAt = new THREE.Vector3(0, 15, 0),
     lights = {
       ambientLight: {color: `#f8f9fa`, strength: .3},

@@ -1,7 +1,7 @@
 
 import GameElement from '../abstractClasses/GameElement';
-import * as THREE from 'three';
-import { drawRandom, radiansToDegrees } from '../functions';
+import { Object3D, BoxGeometry, MeshLambertMaterial, Mesh } from 'three';
+import { drawRandom } from '../functions';
 
 class Map extends GameElement{
   constructor({
@@ -26,9 +26,9 @@ class Map extends GameElement{
     this.back = this.mesh.position.z + this.size / 2;
 
 //THREE
-    this.mesh = new THREE.Object3D();
-    this.material = new THREE.MeshLambertMaterial({ color: options.color });
-    this.geometry = new THREE.BoxGeometry(this.size, this.size, this.size);
+    this.mesh = new Object3D();
+    this.material = new MeshLambertMaterial({ color: options.color });
+    this.geometry = new BoxGeometry(this.size, this.size, this.size);
     this.numberOfSquares = Math.floor((2*Math.PI*this.radius)/this.size);
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
     this.boxNumber = this.numberOfSquares-1;
@@ -37,7 +37,7 @@ class Map extends GameElement{
   }
 
   createHills() {
-    const meshBox = new THREE.Mesh(this.geometry, this.material);
+    const meshBox = new Mesh(this.geometry, this.material);
     meshBox.castShadow = true;
     meshBox.receiveShadow = true;
     let angle, x, z, squareClone;
@@ -81,7 +81,7 @@ class Map extends GameElement{
     do this.earlierHeight = drawRandom(heightRange.min, heightRange.max);
     while (this.earlierHeight % this.size !== 0);
 
-    currentChild.geometry = new THREE.BoxGeometry(this.size, this.earlierHeight, this.size);
+    currentChild.geometry = new BoxGeometry(this.size, this.earlierHeight, this.size);
     currentChild.position.y = this.earlierHeight / 2 - this.size / 2;
 
     this.boxNumber = (this.boxNumber <= 0) ? this.numberOfSquares-1 : this.boxNumber-1;

@@ -1,6 +1,6 @@
-import * as THREE from 'three';
+import { OctahedronGeometry, MeshPhongMaterial, Mesh } from 'three';
 import MapElement from '../abstractClasses/MapElement';
-import { checkSphereCollision, degreeToRadians, drawRandom } from '../functions';
+import { checkSphereCollision, degreeToRadians } from '../functions';
 
 class Gem extends MapElement {
   constructor({
@@ -13,9 +13,9 @@ class Gem extends MapElement {
     this.angle = 0;
     this.rotationSpeed = rotationSpeed/50;
 
-    this.geometry = new THREE.OctahedronGeometry(options.radius, options.details);
-    this.material = new THREE.MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .5});
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.geometry = new OctahedronGeometry(options.radius, options.details);
+    this.material = new MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .5});
+    this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
   }
