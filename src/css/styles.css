@@ -91,6 +91,7 @@ main {
   border-radius: 100px;
   z-index: -100;
   transform: translateY(-130%);
+  transition: all .3s;
 }
 
 footer {
