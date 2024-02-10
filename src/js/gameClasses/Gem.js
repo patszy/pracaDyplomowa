@@ -1,6 +1,6 @@
-import { OctahedronGeometry, MeshPhongMaterial, Mesh } from 'three';
+import { OctahedronGeometry, MeshPhongMaterial, Mesh, MathUtils } from 'three';
 import MapElement from '../abstractClasses/MapElement';
-import { checkSphereCollision, degreeToRadians } from '../functions';
+import { checkSphereCollision } from '../functions';
 
 class Gem extends MapElement {
   constructor({
@@ -26,7 +26,7 @@ class Gem extends MapElement {
     this.mesh.rotation.x += this.rotationSpeed;
     this.mesh.rotation.y += this.rotationSpeed;
 
-    if(Math.floor(this.angle%degreeToRadians(360)) >= Math.floor(degreeToRadians(360))) this.spawn(map);
+    if(Math.floor(this.angle%MathUtils.degToRad(360)) >= Math.floor(MathUtils.degToRad(360))) this.spawn(map);
 
     if(checkSphereCollision(this, hero)) {
       this.spawn(map);
@@ -42,7 +42,7 @@ class Gem extends MapElement {
     const {height} = currentBox.geometry.parameters;
   
     this.aboveMapHeight = height+map.size;
-    this.angle = (angle>=degreeToRadians(360)) ? angle%degreeToRadians(360) : angle;
+    this.angle = (angle>=MathUtils.degToRad(360)) ? angle%MathUtils.degToRad(360) : angle;
   }
 }
 

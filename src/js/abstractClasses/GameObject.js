@@ -1,12 +1,12 @@
-import * as THREE from 'three';
+import { IcosahedronGeometry, MeshLambertMaterial, Mesh, Vector3 } from 'three';
 
 class GameObject {
   constructor({
     radius = 1,
     details = 0,
     color = '#ffffff',
-    velocity = new THREE.Vector3(0, 0, 0),
-    position = new THREE.Vector3(0, 0, 0),
+    velocity = new Vector3(0, 0, 0),
+    position = new Vector3(0, 0, 0),
     geometry,
     material,
   }) {
@@ -18,9 +18,9 @@ class GameObject {
     this.velocity = velocity;
     this.position = position;
     
-    this.geometry = geometry || new THREE.IcosahedronGeometry(this.radius, this.details);
-    this.material = material || new THREE.MeshLambertMaterial({color: this.color, flatShading: true});;
-    this.mesh = new THREE.Mesh(this.geometry, this.material);
+    this.geometry = geometry || new IcosahedronGeometry(this.radius, this.details);
+    this.material = material || new MeshLambertMaterial({color: this.color, flatShading: true});;
+    this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.position.set(...this.position);
     this.mesh.receiveShadow = true;
   }

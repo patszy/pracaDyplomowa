@@ -1,6 +1,4 @@
-import * as THREE from 'three';
 import GameObject from './GameObject';
-import { drawRandom, degreeToRadians } from '../functions';
 
 class MapElement extends GameObject {
   constructor({

@@ -1,7 +1,6 @@
 
 import GameElement from '../abstractClasses/GameElement';
-import { Object3D, BoxGeometry, MeshLambertMaterial, Mesh } from 'three';
-import { drawRandom } from '../functions';
+import { Object3D, BoxGeometry, MeshLambertMaterial, Mesh, MathUtils } from 'three';
 
 class Map extends GameElement{
   constructor({
@@ -78,7 +77,7 @@ class Map extends GameElement{
 
     if(heightRange.max > maxHeight) heightRange.max = maxHeight;
 
-    do this.earlierHeight = drawRandom(heightRange.min, heightRange.max);
+    do this.earlierHeight = MathUtils.randInt(heightRange.min, heightRange.max);
     while (this.earlierHeight % this.size !== 0);
 
     currentChild.geometry = new BoxGeometry(this.size, this.earlierHeight, this.size);

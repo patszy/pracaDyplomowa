@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Scene, PerspectiveCamera, WebGLRenderer, Color, Fog, AmbientLight, DirectionalLight, Vector3 } from 'three';
 
 class Game {
   constructor({
@@ -12,7 +12,7 @@ class Game {
 //GAME VARIABLES
     playStatus = true,
     initMapSpeed = 0,
-    initHeroPosition = new THREE.Vector3(0, 0, 0),
+    initHeroPosition = new Vector3(0, 0, 0),
     levelUpSpeed = 100,
     levelUpMapSpeed = 0,
     mapMaxHeight = 3,
@@ -35,14 +35,14 @@ class Game {
     viewAngle = 75,
     minGenerationField = 1,
     maxGenerationField = 1000,
-    cameraPositon = new THREE.Vector3(-100, 50, 0),
-    cameraLookAt = new THREE.Vector3(0, 15, 0),
+    cameraPositon = new Vector3(-100, 50, 0),
+    cameraLookAt = new Vector3(0, 15, 0),
     lights = {
       ambientLight: {color: `#ced4da`, strength: .3},
       shadowLight: {
         color: `#ced4da`,
         strength: 5,
-        position: new THREE.Vector3(-100, 200, 200),
+        position: new Vector3(-100, 200, 200),
         left: -300,
         right: 300,
         top: 300,
@@ -100,12 +100,12 @@ class Game {
   }
 
   createScene() {
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(this.viewAngle, this.aspectRatio, this.minGenerationField, this.maxGenerationField);
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.scene = new Scene();
+    this.camera = new PerspectiveCamera(this.viewAngle, this.aspectRatio, this.minGenerationField, this.maxGenerationField);
+    this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
 
-    this.scene.background = new THREE.Color(this.fog.color);
-    this.scene.fog = new THREE.Fog(this.fog.color, this.fog.near, this.fog.far);
+    this.scene.background = new Color(this.fog.color);
+    this.scene.fog = new Fog(this.fog.color, this.fog.near, this.fog.far);
     this.camera.position.set(...this.cameraPositon);
     this.camera.lookAt(this.cameraLookAt);
 
@@ -119,8 +119,8 @@ class Game {
   }
 
   createLights() {
-    this.ambientLight = new THREE.AmbientLight(this.lights.ambientLight.color, this.lights.ambientLight.strength);
-    this.shadowLight = new THREE.DirectionalLight(this.lights.shadowLight.color, this.lights.shadowLight.strength);
+    this.ambientLight = new AmbientLight(this.lights.ambientLight.color, this.lights.ambientLight.strength);
+    this.shadowLight = new DirectionalLight(this.lights.shadowLight.color, this.lights.shadowLight.strength);
 
     this.shadowLight.position.set(...this.lights.shadowLight.position);
     this.shadowLight.castShadow = true;
@@ -169,7 +169,7 @@ class Game {
     map.maxHeight = this.initMapMaxHeight;
     map.reset();
     map.rotationSpeed = this.initMapSpeed;
-    hero.velocity = new THREE.Vector3(0,0,0);
+    hero.velocity = new Vector3(0,0,0);
     hero.mesh.position.set(...this.initHeroPosition);    
     gem.spawn(map);
 
@@ -182,7 +182,7 @@ class Game {
   }
 
   stopGame(map, hero) {
-    hero.velocity = new THREE.Vector3(-.2, 0, -.3-map.rotationSpeed);
+    hero.velocity = new Vector3(-.2, 0, -.3-map.rotationSpeed);
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }

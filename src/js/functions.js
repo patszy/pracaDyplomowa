@@ -1,5 +1,3 @@
-import * as THREE from 'three';
-
 const checkBoxCollision = (obj1, obj2) => {
   const x = obj1.right >= obj2.left && obj1.left <= obj2.right;
   const y = obj1.bottom + obj1.velocity.y <= obj2.top && obj1.top >= obj2.bottom;
@@ -33,12 +31,4 @@ const checkSphereCollision = (obj1, obj2) => {
   return false;
 }
 
-const drawRandom = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1) ) + min;
-}
-
-const degreeToRadians = (degrees) => {
-  return THREE.MathUtils.degToRad(degrees);
-}
-
-export { checkMapCollision, checkBoxCollision, checkSphereCollision, drawRandom, degreeToRadians };
+export { checkMapCollision, checkBoxCollision, checkSphereCollision };
