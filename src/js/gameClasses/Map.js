@@ -96,10 +96,12 @@ class Map extends GameElement{
     });
   }
 
-  updatePosition() {
-    const rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
-    
-    if(!rotationMod) this.spawn();
+  getRotationMod() {
+    return Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
+  }
+
+  updatePosition() { 
+    if(!this.getRotationMod()) this.spawn();
 
     this.mesh.children.forEach(child => {  
       child.position.x = this.radius * Math.cos(child.angle);

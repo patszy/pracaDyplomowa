@@ -13,6 +13,7 @@ class Game {
     playStatus = true,
     initMapSpeed = 0,
     initHeroPosition = new THREE.Vector3(0, 0, 0),
+    levelUpSpeed = 100,
     levelUpMapSpeed = 0,
     mapMaxHeight = 3,
     levelUpMapHeight = 1,
@@ -22,6 +23,7 @@ class Game {
       level: 1,
       score: 0,
     },
+    gemScore = 1,
     keys = {
       go: false,
       jump: false
@@ -81,12 +83,14 @@ class Game {
     this.playStatus = playStatus;
     this.initMapSpeed = initMapSpeed;
     this.initHeroPosition = initHeroPosition;
+    this.levelUpSpeed = levelUpSpeed;
     this.levelUpMapSpeed = levelUpMapSpeed;
     this.mapMaxHeight = mapMaxHeight;
     this.levelUpMapHeight = levelUpMapHeight;
     this.initMapMaxHeight = initMapMaxHeight;
     this.initStats = initStats;
     this.stats = {...initStats};
+    this.gemScore = gemScore;
     this.levelValue = document.getElementById(`levelValue`);
     this.scoreValue = document.getElementById(`scoreValue`);
     this.hpBar = document.getElementById(`hpBar`);
@@ -183,8 +187,15 @@ class Game {
     this.playStatus = false;
   }
 
-  updateScore(value){
-    this.stats.score = this.stats.score + value;
+  checkScore(map) {
+    if(this.stats.score >= this.levelUpSpeed) {
+      this.updateScore(-this.levelUpSpeed);
+      this.updateLevel(map);
+    }
+  }
+
+  updateScore(value = 1){
+    this.stats.score += value;
     this.scoreValue.innerText = Math.floor(this.stats.score);
   }
 

@@ -12,8 +12,10 @@ const createGame = () => {
   game = new Game({
     initMapSpeed: 1,
     initMapMaxHeight: 1,
+    levelUpSpeed: 100,
     levelUpMapSpeed: .1,
     mapMaxHeight: 3,
+    gemScore: 30,
     health: 100,
   });
   game.fog = {
@@ -68,6 +70,7 @@ const animate = () => {
   gem.updatePosition(map, hero, game);
 
   game.renderer.render(game.scene, game.camera);
+  game.checkScore(map);
   
   requestAnimationFrame(animate);
 }

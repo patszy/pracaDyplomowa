@@ -59,7 +59,7 @@ class Hero extends GameElement{
     this.mesh.position.x += this.velocity.x;
     this.mesh.position.z += this.velocity.z;
 
-    if(game.stats.health > 0) game.updateScore(map.mesh.children[0].angle*0.01);
+    if(game.stats.health > 0 && map.getRotationMod()==0 ) game.updateScore();
 
     if(game.keys.jump) {
       if(!game.playStatus) game.startGame(map, this, gem);

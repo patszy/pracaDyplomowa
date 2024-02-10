@@ -31,8 +31,7 @@ class Gem extends MapElement {
     if(checkSphereCollision(this, hero)) {
       this.spawn(map);
       
-      game.updateScore(100);
-      game.updateLevel(map);
+      game.updateScore(game.gemScore);
       hero.setRotationSpeed(map);
     }
   }
