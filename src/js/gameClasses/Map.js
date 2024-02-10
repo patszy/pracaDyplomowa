@@ -68,7 +68,7 @@ class Map extends GameElement{
     });
   }
 
-  generate() {
+  spawn() {
     const currentChild = this.mesh.children[this.boxNumber];
     const maxHeight = this.size * (this.maxHeight+1);
     let heightRange = {
@@ -99,7 +99,7 @@ class Map extends GameElement{
   updatePosition() {
     const rotationMod = Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
     
-    if(!rotationMod) this.generate();
+    if(!rotationMod) this.spawn();
 
     this.mesh.children.forEach(child => {  
       child.position.x = this.radius * Math.cos(child.angle);

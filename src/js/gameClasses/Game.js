@@ -3,14 +3,11 @@ import * as THREE from 'three';
 class Game {
   constructor({
 //GAME COLORS
-    white = `#f8f9fa`,
+    white = `#ced4da`,
     black = `#04080f`,
-    red = `#780000`,
+    red = `#941b0c`,
     green = `#004b23`,
-    blue = `#07c8f9`,
-    skyblue = `#e3f2fd`,
-    yellow = `#ffe169`,
-    gray = `#6c757d`,
+    blue = `#0077b6`,
 
 //GAME VARIABLES
     playStatus = true,
@@ -39,9 +36,9 @@ class Game {
     cameraPositon = new THREE.Vector3(-100, 50, 0),
     cameraLookAt = new THREE.Vector3(0, 15, 0),
     lights = {
-      ambientLight: {color: `#f8f9fa`, strength: .3},
+      ambientLight: {color: `#ced4da`, strength: .3},
       shadowLight: {
-        color: `#f8f9fa`,
+        color: `#ced4da`,
         strength: 5,
         position: new THREE.Vector3(-100, 200, 200),
         left: -300,
@@ -54,7 +51,7 @@ class Game {
       },
     },
     fog = {
-      color: `#f8f9fa`,
+      color: `#ced4da`,
       near: 0,
       far: 500,
     }
@@ -65,10 +62,7 @@ class Game {
     this.black = black,
     this.red = red,
     this.green = green,
-    this.blue = blue,
-    this.skyblue = skyblue,
-    this.yellow = yellow,
-    this.gray = gray,
+    this.blue = blue
     
 
 //THREE VARIABLES
