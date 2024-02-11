@@ -49,7 +49,7 @@ class Hero extends GameElement{
   }
 
   setRotationSpeed(map){
-    this.mesh.rotation.z += map.rotationSpeed*((2*Math.PI*map.size)/(2*Math.PI*this.radius));
+    this.mesh.rotation.x += map.rotationSpeed/map.size;
   }
 
   updatePosition(map, game, gem) {  

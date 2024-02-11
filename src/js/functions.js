@@ -1,6 +1,7 @@
 const checkBoxCollision = (obj1, obj2) => {
   const x = obj1.right >= obj2.left && obj1.left <= obj2.right;
-  const y = obj1.bottom + obj1.velocity.y <= obj2.top && obj1.top >= obj2.bottom;
+  // const y = obj1.bottom + obj1.velocity.y <= obj2.top && obj1.top >= obj2.bottom;
+  const y = obj1.bottom <= obj2.top && obj1.top >= obj2.bottom;
   const z = obj1.front <= obj2.back && obj1.back >= obj2.front;
 
   return {x, y, z};

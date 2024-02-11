@@ -14,7 +14,7 @@ class Gem extends MapElement {
     this.rotationSpeed = rotationSpeed/50;
 
     this.geometry = new OctahedronGeometry(options.radius, options.details);
-    this.material = new MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .5});
+    this.material = new MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .7});
     this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;

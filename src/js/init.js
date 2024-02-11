@@ -12,7 +12,7 @@ const createGame = () => {
   game = new Game({
     initMapSpeed: 1,
     initMapMaxHeight: 1,
-    levelUpSpeed: 100,
+    levelUpSpeed: 10,
     levelUpMapSpeed: .1,
     mapMaxHeight: 3,
     gemScore: 30,
@@ -42,7 +42,7 @@ const createMap = () =>{
 const createHero = () =>{
   hero = new Hero({
     radius: map.size/5,
-    details: 2,
+    details: 1,
     color: game.red,
     jumpStrength: map.size*.4,
     bounciness: .7

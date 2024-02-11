@@ -38,10 +38,10 @@ class Game {
     cameraPositon = new Vector3(-100, 50, 0),
     cameraLookAt = new Vector3(0, 15, 0),
     lights = {
-      ambientLight: {color: `#ced4da`, strength: .3},
+      ambientLight: {color: `#ced4da`, strength: .5},
       shadowLight: {
         color: `#ced4da`,
-        strength: 5,
+        strength: 10,
         position: new Vector3(-100, 200, 200),
         left: -300,
         right: 300,
