@@ -32,10 +32,10 @@ class Map extends GameElement{
     this.angleStep = (2*Math.PI)/this.numberOfSquares;
     this.boxNumber = this.numberOfSquares-1;
 
-    this.createHills();
+    this.createMap();
   }
 
-  createHills() {
+  createMap() {
     const meshBox = new Mesh(this.geometry, this.material);
     meshBox.castShadow = true;
     meshBox.receiveShadow = true;
@@ -45,8 +45,8 @@ class Map extends GameElement{
       angle = i*this.angleStep;
       x = this.radius * Math.cos(angle);
       z = this.radius * Math.sin(angle);
+
       squareClone = meshBox.clone();
-      
       squareClone.angle = angle;
       squareClone.position.set(x,0,z);
 
