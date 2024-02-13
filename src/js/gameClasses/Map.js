@@ -69,7 +69,7 @@ class Map extends GameElement{
 
   spawn() {
     const currentChild = this.mesh.children[this.boxNumber];
-    const maxHeight = this.maxHeight+1;
+    const maxHeight = this.maxHeight + 1;
     let heightRange = {
         min: 1,
         max: Math.min(this.earlierHeight + 1, maxHeight)
@@ -77,8 +77,8 @@ class Map extends GameElement{
 
     this.earlierHeight = MathUtils.randInt(heightRange.min, heightRange.max);
 
-    currentChild.geometry = new BoxGeometry(this.size, this.earlierHeight*this.size, this.size);
-    currentChild.position.y = (this.earlierHeight*this.size - this.size) / 2;
+    currentChild.geometry = new BoxGeometry(this.size, this.earlierHeight * this.size, this.size);
+    currentChild.position.y = (this.earlierHeight * this.size - this.size) / 2;
 
     this.boxNumber = (this.boxNumber <= 0) ? this.numberOfSquares-1 : this.boxNumber-1;
   }
