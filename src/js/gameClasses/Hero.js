@@ -1,6 +1,6 @@
 import { MeshPhongMaterial, Mesh } from 'three';
 import GameElement from '../abstractClasses/GameElement';
-import { checkMapCollision } from '../functions';
+import { checkBoxCollision } from '../functions';
 
 class Hero extends GameElement{
   constructor({
@@ -53,7 +53,7 @@ class Hero extends GameElement{
   }
 
   updatePosition(map, game, gem) {  
-    const {x,y,z} = checkMapCollision(this, map);
+    const {x,y,z} = this.checkCollision(map);
     
     this.setRotationSpeed(map);
     this.mesh.position.x += this.velocity.x;
@@ -83,11 +83,23 @@ class Hero extends GameElement{
 
     this.velocity.y -= map.gravity;
 
-    if(checkMapCollision(this, map).y) {
+    if(this.checkCollision(map).y) {
       this.jumping = false;
       this.velocity.y *= this.bounciness;
       this.velocity.y = -this.velocity.y;
     } else this.mesh.position.y += this.velocity.y;
+  }
+
+  checkCollision(map) {
+    let x = false, y = false, z = false;
+  
+    for(let i=0; i<map.mesh.children.length; i++){
+      const {x, y, z} = checkBoxCollision(this, map.mesh.children[i]);
+  
+      if(x && y && z) return {x, y, z};
+    }
+  
+    return {x, y, z};
   }
 }
 
