@@ -182,7 +182,7 @@ class Game {
   }
 
   stopGame(map, hero) {
-    hero.velocity = new Vector3(-.2, 0, -.3-map.rotationSpeed);
+    hero.velocity = new Vector3(-map.rotationSpeed, 0, -100*map.rotationSpeed);
     this.messageRestart.style.display = `block`;
     this.playStatus = false;
   }
