@@ -93,7 +93,7 @@ class Map extends GameElement{
   }
 
   getRotationMod() {
-    return Math.floor((Math.abs(this.mesh.children[0].angle)%this.angleStep)*(100/this.rotationSpeed));
+    return Math.floor(this.mesh.children[0].angle%this.angleStep/(this.rotationSpeed));
   }
 
   updatePosition() { 
@@ -104,7 +104,7 @@ class Map extends GameElement{
       child.position.z = this.radius * Math.sin(child.angle);
       child.rotation.y = -child.angle;
 
-      child.angle += this.rotationSpeed / 100;
+      child.angle += this.rotationSpeed;
     });
   }
 }

@@ -10,9 +10,9 @@ let game, map, hero, gem;
 
 const createGame = () => {
   game = new Game({
-    initMapSpeed: 1,
+    initMapSpeed: 0.01,
     initMapMaxHeight: 1,
-    levelUpSpeed: 10,
+    levelUpSpeed: 100,
     levelUpMapSpeed: .1,
     mapMaxHeight: 3,
     gemScore: 30,
