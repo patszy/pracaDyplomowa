@@ -1,8 +1,8 @@
 
-import GameElement from '../abstractClasses/GameElement';
+import MapElement from '../abstractClasses/MapElement';
 import { Object3D, BoxGeometry, MeshLambertMaterial, Mesh, MathUtils } from 'three';
 
-class Map extends GameElement{
+class Map extends MapElement{
   constructor({
     gravity = 1,
     size = 1,

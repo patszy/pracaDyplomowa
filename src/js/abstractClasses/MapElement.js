@@ -4,6 +4,7 @@ class MapElement extends GameObject {
   constructor({
     angle = 0,
     aboveMapHeight = 0,
+    rotationSpeed = 0,
     ...options
   }) {
     if(new.target === MapElement) throw new Error("Cannot instantiate abstract class MapElement");
@@ -12,6 +13,7 @@ class MapElement extends GameObject {
     
     this.angle = angle;
     this.aboveMapHeight = aboveMapHeight;
+    this.rotationSpeed = rotationSpeed;
     
     this.mesh.castShadow = true;
   }

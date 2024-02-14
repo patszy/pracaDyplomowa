@@ -56,7 +56,7 @@ const createGem = () =>{
   gem = new Gem({
     radius: hero.radius/1.5,
     color: game.blue,
-    rotationSpeed: 1
+    rotationSpeed: .05
   });
   gem.spawn(map, hero);
   game.scene.add(gem.mesh);

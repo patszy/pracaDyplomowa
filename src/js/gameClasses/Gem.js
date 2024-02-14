@@ -5,13 +5,11 @@ import { checkSphereCollision } from '../functions';
 class Gem extends MapElement {
   constructor({
     shininess = 1,
-    rotationSpeed = 0,
     ...options
   }) {
     super(options);
 
     this.angle = 0;
-    this.rotationSpeed = rotationSpeed/50;
 
     this.geometry = new OctahedronGeometry(options.radius, options.details);
     this.material = new MeshPhongMaterial({color: options.color, shininess, flatShading: true, transparent: true, opacity: .7});

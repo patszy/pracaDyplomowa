@@ -1,8 +1,8 @@
 import { MeshPhongMaterial, Mesh } from 'three';
-import GameElement from '../abstractClasses/GameElement';
+import GameObject from '../abstractClasses/GameObject';
 import { checkBoxCollision } from '../functions';
 
-class Hero extends GameElement{
+class Hero extends GameObject{
   constructor({
     shininess = 100,
     bounciness = 1,
