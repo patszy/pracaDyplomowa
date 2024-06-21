@@ -16,7 +16,7 @@ class Hero extends GameObject{
     this.jumpStrength = jumpStrength;
     this.jumping = jumping;
 
-//Sides
+//Sides for collision
     this.right = this.mesh.position.x + this.radius;
     this.left = this.mesh.position.x - this.radius;
     this.bottom = this.mesh.position.y - this.radius;

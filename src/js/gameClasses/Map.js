@@ -16,7 +16,7 @@ class Map extends MapElement{
     this.maxHeight = maxHeight;
     this.earlierHeight = this.size; 
 
-//Sides
+//Sides for collision
     this.right = this.mesh.position.x + this.size / 2;
     this.left = this.mesh.position.x - this.size / 2;
     this.bottom = this.mesh.position.y;
